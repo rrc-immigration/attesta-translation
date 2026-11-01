@@ -231,6 +231,7 @@ select:hover, .num input:hover { border-color: var(--ink-soft); }
 .foot .wrap { display: grid; gap: 10px; }
 .foot .brand { margin: 0 0 6px; }
 .foot p { max-width: 70ch; }
+.foot .legal a { color: var(--seal-deep); font-weight: 600; margin-right: 18px; }
 </style>
 </head>
 <body>
@@ -635,6 +636,7 @@ select:hover, .num input:hover { border-color: var(--ink-soft); }
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Attesta Translation"><svg aria-hidden="true"><use href="#seal"/></svg><b>Attesta</b><span>Translation</span></a>
     <p data-i18n="foot_disc">Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.</p>
+    <p class="legal"><a href="/terms" data-i18n="foot_terms">Terms of Service</a> <a href="/privacy" data-i18n="foot_privacy">Privacy Policy</a></p>
     <p>&copy; 2026 Attesta Translation</p>
   </div>
 </footer>
@@ -707,9 +709,10 @@ en: {
   q3: "Which languages do you translate?", a3: "Portuguese, Spanish and French into English. Italian into English on request. If you need another direction, such as English into Portuguese, ask us before you order.",
   q4: "Do you make sworn translations for Brazil, Italy, France or Spain?", a4: "Not at this time. A certified translation for a US filing is different from a sworn translation made by a translator appointed in another country. If you need one, tell us and we will say before you order whether we can help.",
   q5: "Can I send photos from my phone?", a5: "Yes, if every edge, stamp and handwritten note is readable. Include the back of any document that has writing on it. We tell you before you pay if something needs a better scan.",
-  q6: "How do you handle my files?", a6: "Passports and civil records are sensitive. Uploads travel over an encrypted connection, are used only to prepare your translation, and are deleted on a fixed schedule that we state at checkout.",
+  q6: "How do you handle my files?", a6: "Passports and civil records are sensitive. We use your documents only to prepare your translation, and we delete them within 30 days after we deliver it. You can ask us to delete them sooner. See our Privacy Policy below.",
   q7: "Do you give immigration advice?", a7: "No. Attesta Translation translates documents. It is not a law firm and can't tell you which documents your case needs. Ask your attorney or accredited representative.",
   end_h: "Send your documents and see your price", end_mail: "Questions before you order? Write to", wa_cta: "Message us on WhatsApp", wa_text: "Hello, I have a question about a certified translation.",
+  foot_terms: "Terms of Service", foot_privacy: "Privacy Policy",
   foot_disc: "Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.",
   langBtn: "PT", langAria: "Português",
   optStd: function (d) { return "Standard, " + d + " business days"; },
@@ -771,9 +774,10 @@ pt: {
   q3: "Quais idiomas vocês traduzem?", a3: "Português, espanhol e francês para o inglês. Italiano para o inglês sob consulta. Se você precisa de outra direção, como do inglês para o português, fale conosco antes de fazer o pedido.",
   q4: "Vocês fazem tradução juramentada para o Brasil, a Itália, a França ou a Espanha?", a4: "Por enquanto não. Uma tradução certificada para um processo nos EUA é diferente de uma tradução juramentada feita por um tradutor nomeado em outro país. Se você precisa de uma, avise e diremos antes do pedido se podemos ajudar.",
   q5: "Posso enviar fotos do celular?", a5: "Sim, se todas as bordas, carimbos e anotações manuscritas estiverem legíveis. Inclua o verso de qualquer documento que tenha escrita. Avisamos antes do pagamento se algo precisar de uma digitalização melhor.",
-  q6: "Como vocês tratam os meus arquivos?", a6: "Passaportes e certidões são dados sensíveis. Os envios trafegam por conexão criptografada, são usados somente para preparar a sua tradução e são apagados em um prazo fixo, que informamos no pagamento.",
+  q6: "Como vocês tratam os meus arquivos?", a6: "Passaportes e certidões são dados sensíveis. Usamos os seus documentos somente para preparar a tradução e os apagamos em até 30 dias após a entrega. Você pode pedir que sejam apagados antes. Veja a nossa Política de Privacidade abaixo (em inglês).",
   q7: "Vocês dão orientação de imigração?", a7: "Não. A Attesta Translation traduz documentos. Não é um escritório de advocacia e não pode dizer quais documentos o seu caso exige. Consulte o seu advogado ou representante credenciado.",
   end_h: "Envie seus documentos e veja o preço", end_mail: "Dúvidas antes de pedir? Escreva para", wa_cta: "Fale conosco no WhatsApp", wa_text: "Olá, tenho uma dúvida sobre uma tradução certificada.",
+  foot_terms: "Termos de Serviço (em inglês)", foot_privacy: "Política de Privacidade (em inglês)",
   foot_disc: "A Attesta Translation presta serviço de tradução de documentos. Não é um escritório de advocacia e não oferece orientação jurídica ou de imigração.",
   langBtn: "EN", langAria: "English",
   optStd: function (d) { return "Padrão, " + d + " dias úteis"; },
