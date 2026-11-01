@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attesta Translation</title>
+<meta name="description" content="Certified translations of Portuguese, Spanish, French and Italian documents into English for USCIS filings, with a signed Certificate of Translation Accuracy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400..700&display=swap" rel="stylesheet">
+<style>
+/* Design plan
+   Idea: the page is a desk of paperwork. Cool bone paper, ink-navy type, one seal-green accent used only for
+   actions, the seal and the guarantee. The memorable moment is the original/translation comparison slider;
+   everything around it stays plain. Documents get square corners, the order tool gets soft ones. */
+:root {
+  --paper: #F4F4EF;
+  --paper-deep: #E9E9E1;
+  --sheet: #FFFFFF;
+  --ink: #14213D;
+  --ink-soft: #434C63;
+  --rule: #C6C9BE;
+  --seal: #1D6A55;
+  --seal-deep: #14503F;
+  --warn: #9A3030;
+  --display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --body: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --gutter: clamp(16px, 4vw, 40px);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.55;
+}
+img, svg { max-width: 100%; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.012em; }
+h1 { font-size: clamp(2.5rem, 5.4vw, 4.1rem); }
+h2 { font-size: clamp(1.9rem, 3.4vw, 2.7rem); }
+h3 { font-size: 1.3rem; line-height: 1.25; letter-spacing: -0.005em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--seal); outline-offset: 3px; border-radius: 3px; }
+.skip { position: absolute; left: 12px; top: -60px; background: var(--ink); color: var(--paper); padding: 10px 14px; border-radius: 6px; z-index: 10; }
+.skip:focus { top: 12px; }
+
+.wrap { width: min(1120px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+.band { padding-block: clamp(56px, 8vw, 104px); }
+.band.deep { background: var(--paper-deep); }
+.prose { max-width: 62ch; color: var(--ink-soft); }
+.prose + .prose { margin-top: 14px; }
+.sec-head { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 48px); }
+
+/* Header */
+.top { border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; align-items: center; gap: 20px; min-height: 68px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: auto; }
+.brand svg { width: 36px; height: 36px; color: var(--seal); flex: none; }
+.brand b { font-family: var(--display); font-size: 1.55rem; font-weight: 600; letter-spacing: -0.01em; }
+.brand span { font-family: var(--display); font-size: 1.55rem; font-weight: 400; color: var(--ink-soft); margin-left: -4px; }
+.nav { display: flex; gap: 26px; font-size: 0.95rem; }
+.nav a { text-decoration: none; color: var(--ink-soft); padding: 6px 0; }
+.nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 5px; }
+.lang { font: inherit; font-size: 0.9rem; font-weight: 600; border: 1px solid var(--rule); background: transparent; color: var(--ink); border-radius: 6px; padding: 8px 12px; cursor: pointer; min-height: 40px; }
+.lang:hover { border-color: var(--ink); }
+@media (max-width: 860px) { .nav { display: none; } }
+@media (max-width: 520px) { .top .btn { display: none; } .top .wrap { gap: 12px; } .brand b, .brand span { font-size: 1.4rem; } }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; border-radius: 8px; padding: 13px 20px; min-height: 48px; border: 1.5px solid var(--seal); background: var(--seal); color: #fff; transition: background .15s; }
+.btn:hover { background: var(--seal-deep); border-color: var(--seal-deep); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--paper); }
+.btn.small { padding: 9px 14px; min-height: 40px; font-size: 0.95rem; }
+
+/* Hero */
+.hero { padding-block: clamp(40px, 6vw, 80px) clamp(48px, 6vw, 88px); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+@media (max-width: 920px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } }
+.hero-copy { display: grid; gap: 22px; padding-top: clamp(0px, 2vw, 24px); }
+.hero-copy .lede { font-size: 1.2rem; color: var(--ink-soft); max-width: 40ch; }
+.facts { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 12px; }
+.facts li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; }
+.facts svg { width: 22px; height: 22px; color: var(--seal); margin-top: 1px; }
+
+/* Order tool */
+.tool { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: clamp(18px, 3vw, 28px); display: grid; gap: 20px; box-shadow: 0 1px 0 var(--rule), 0 18px 40px -28px rgba(20, 33, 61, 0.35); }
+.tool h2 { font-size: 1.6rem; }
+.field { display: grid; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.field > label, .field > legend { font-weight: 600; font-size: 0.95rem; padding: 0; }
+.hint { font-size: 0.875rem; color: var(--ink-soft); }
+select, .num input { font: inherit; color: var(--ink); background: var(--sheet); border: 1.5px solid var(--rule); border-radius: 8px; min-height: 48px; padding: 10px 12px; width: 100%; }
+select:hover, .num input:hover { border-color: var(--ink-soft); }
+.into { font-size: 0.9rem; color: var(--ink-soft); }
+.drop { position: relative; display: grid; gap: 4px; justify-items: start; padding: 16px; border: 1.5px dashed var(--ink-soft); border-radius: 10px; background: var(--paper); cursor: pointer; }
+.drop:hover, .drop.over { border-color: var(--seal); background: #EEF4F0; }
+.drop:focus-within { outline: 3px solid var(--seal); outline-offset: 3px; }
+.drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.drop strong { font-weight: 600; }
+.files { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.files li { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; background: var(--paper); border-radius: 6px; padding: 6px 6px 6px 12px; }
+.files li span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files li em { font-style: normal; color: var(--ink-soft); font-size: 0.85rem; }
+.files button { font: inherit; width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-soft); cursor: pointer; font-size: 1.2rem; line-height: 1; }
+.files button:hover { background: var(--paper-deep); color: var(--ink); }
+.num { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; }
+.num button { font: inherit; font-size: 1.4rem; border: 1.5px solid var(--rule); border-radius: 8px; background: var(--sheet); color: var(--ink); cursor: pointer; min-height: 48px; }
+.num button:hover { border-color: var(--ink); }
+.num input { text-align: center; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.num input::-webkit-outer-spin-button, .num input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.choice { display: grid; gap: 8px; }
+.choice label { display: flex; align-items: center; gap: 10px; border: 1.5px solid var(--rule); border-radius: 8px; padding: 12px 14px; cursor: pointer; font-size: 0.98rem; }
+.choice label:hover { border-color: var(--ink-soft); }
+.choice input { accent-color: var(--seal); width: 18px; height: 18px; margin: 0; flex: none; }
+.choice label:has(input:checked) { border-color: var(--seal); background: #EEF4F0; }
+.choice label:has(input:focus-visible) { outline: 3px solid var(--seal); outline-offset: 2px; }
+.totals { margin: 0; display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+.totals div { display: flex; justify-content: space-between; gap: 16px; }
+.totals div[hidden] { display: none; }
+.totals dt { color: var(--ink-soft); }
+.totals dd { margin: 0; font-weight: 500; }
+.totals .sum { font-size: 1.35rem; padding-top: 10px; border-top: 1px solid var(--rule); }
+.totals .sum dt { color: var(--ink); font-weight: 600; }
+.totals .sum dd { font-family: var(--display); font-size: 1.9rem; font-weight: 600; line-height: 1; }
+.preview { border-left: 4px solid var(--seal); background: #EEF4F0; padding: 12px 14px; border-radius: 0 8px 8px 0; font-size: 0.95rem; display: grid; gap: 4px; }
+.preview[hidden] { display: none; }
+
+/* Mirror slider */
+.mirror-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+@media (max-width: 920px) { .mirror-grid { grid-template-columns: minmax(0, 1fr); } }
+.mirror-wrap { display: grid; gap: 12px; }
+.mirror { position: relative; width: 100%; max-width: 640px; margin-inline: auto; aspect-ratio: 1 / 1.1; container-type: inline-size; background: #FBFBF8; border: 1px solid var(--rule); box-shadow: 0 24px 50px -32px rgba(20, 33, 61, 0.5); overflow: hidden; touch-action: pan-y; cursor: ew-resize; user-select: none; -webkit-user-select: none; --pos: 50%; }
+.doc { position: absolute; inset: 0; padding: 12cqw 6cqw 5cqw; font-family: var(--display); color: #1B2236; display: grid; align-content: start; gap: 3cqw; }
+.doc.en { clip-path: inset(0 0 0 var(--pos)); background: #FBFBF8; }
+.doc .wm { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--body); font-weight: 700; font-size: 17cqw; letter-spacing: 0.04em; color: rgba(20, 33, 61, 0.06); transform: rotate(-22deg); pointer-events: none; }
+.doc .dt { text-align: center; font-weight: 600; font-size: 4.6cqw; letter-spacing: 0.05em; }
+.fields { display: grid; grid-template-columns: repeat(6, 1fr); padding: 0.2cqw 0 0 0.2cqw; }
+.f { grid-column: span 6; border: 0.22cqw solid #8F95A5; margin: -0.2cqw 0 0 -0.2cqw; padding: 1.3cqw 1.8cqw 1.5cqw; display: grid; gap: 0.4cqw; background: transparent; }
+.f.s3 { grid-column: span 3; }
+.l { font-family: var(--body); font-size: 2.1cqw; font-weight: 600; color: #566077; }
+.v { font-size: 3.1cqw; font-weight: 500; line-height: 1.25; }
+.sig { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 4cqw; margin-top: 2cqw; }
+.sig .stamp { width: 17cqw; height: 17cqw; color: #3B4F8C; opacity: 0.8; transform: rotate(-8deg); }
+.sig .note { font-family: var(--body); font-size: 2.3cqw; color: #566077; line-height: 1.35; }
+.sig .scrawl { width: 100%; height: 9cqw; color: #1B2236; }
+.sig .who { font-family: var(--body); font-size: 2.1cqw; color: #566077; border-top: 0.2cqw solid #8F95A5; padding-top: 0.8cqw; }
+.tag { position: absolute; top: 3cqw; padding: 1.1cqw 2.2cqw; background: var(--ink); color: var(--paper); font-family: var(--body); font-weight: 600; font-size: 2.5cqw; border-radius: 999px; pointer-events: none; z-index: 2; }
+.tag.l1 { left: 3cqw; } .tag.r1 { right: 3cqw; }
+.handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; margin-left: -1.5px; background: var(--seal); z-index: 3; pointer-events: none; }
+.knob { position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; background: var(--seal); color: #fff; display: grid; place-items: center; box-shadow: 0 6px 16px rgba(20, 33, 61, 0.35); }
+.knob svg { width: 22px; height: 22px; }
+.mirror-range { position: absolute; left: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; }
+.mirror:has(.mirror-range:focus-visible) .knob { outline: 3px solid var(--ink); outline-offset: 3px; }
+.mirror-note { font-size: 0.9rem; color: var(--ink-soft); text-align: center; max-width: 640px; margin-inline: auto; }
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 3vw, 36px); counter-reset: s; }
+@media (max-width: 920px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.steps li { border-top: 2px solid var(--ink); padding-top: 16px; display: grid; gap: 8px; align-content: start; counter-increment: s; }
+.steps li::before { content: counter(s); font-family: var(--display); font-size: 2.4rem; line-height: 1; font-weight: 500; color: var(--seal); }
+.steps p { color: var(--ink-soft); font-size: 1rem; }
+
+/* Certificate */
+.rule-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+@media (max-width: 920px) { .rule-grid { grid-template-columns: minmax(0, 1fr); } }
+.rule-copy { display: grid; gap: 14px; align-content: start; }
+.cert-wrap { display: grid; gap: 12px; }
+.cert { position: relative; container-type: inline-size; width: 100%; max-width: 520px; margin-inline: auto; aspect-ratio: 1 / 1.12; background: #FBFBF8; border: 1px solid var(--rule); box-shadow: 0 24px 50px -32px rgba(20, 33, 61, 0.5); padding: 3.2cqw; font-family: var(--display); color: #1B2236; }
+.cert-in { height: 100%; border: 0.5cqw double var(--ink); padding: 6cqw 7cqw 5cqw; display: grid; align-content: start; gap: 3.4cqw; position: relative; overflow: hidden; }
+.cert .wm { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--body); font-weight: 700; font-size: 20cqw; letter-spacing: 0.04em; color: rgba(20, 33, 61, 0.055); transform: rotate(-24deg); pointer-events: none; }
+.cert .fn { text-align: center; font-size: 4.4cqw; font-weight: 600; letter-spacing: 0.03em; }
+.cert .ct { text-align: center; font-size: 5.4cqw; font-weight: 500; line-height: 1.1; }
+.cert .body { font-size: 3.2cqw; line-height: 1.5; text-align: justify; hyphens: auto; }
+.cert dl { margin: 0; display: grid; grid-template-columns: auto 1fr; font-size: 2.9cqw; border-top: 0.2cqw solid #8F95A5; }
+.cert dt, .cert dd { margin: 0; padding: 1.3cqw 0; border-bottom: 0.2cqw solid #C6C9BE; }
+.cert dt { font-family: var(--body); font-weight: 600; font-size: 2.5cqw; color: #566077; padding-right: 4cqw; align-self: center; }
+.cert .sign { display: grid; grid-template-columns: 1fr 25cqw; align-items: end; gap: 4cqw; margin-top: 3cqw; }
+.cert .line { border-bottom: 0.3cqw solid #1B2236; height: 9cqw; }
+.cert .cap { font-family: var(--body); font-size: 2.3cqw; color: #566077; margin-top: 0.8cqw; }
+.cert .seal { width: 25cqw; height: 25cqw; filter: drop-shadow(0 0.6cqw 0.8cqw rgba(58, 42, 5, 0.35)); }
+
+/* Documents list */
+.index { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.index li { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 8px 32px; padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.index h3 { font-size: 1.35rem; }
+.index p { color: var(--ink-soft); }
+@media (max-width: 640px) { .index li { grid-template-columns: minmax(0, 1fr); } }
+.more { margin-top: 18px; color: var(--ink-soft); }
+
+/* Pricing */
+.price-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+@media (max-width: 920px) { .price-grid { grid-template-columns: minmax(0, 1fr); } }
+.rates { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); font-variant-numeric: tabular-nums; }
+.rates li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.rates .what { font-weight: 600; }
+.rates .what small { display: block; font-weight: 400; color: var(--ink-soft); font-size: 0.92rem; }
+.rates .amt { font-family: var(--display); font-size: 1.7rem; font-weight: 600; text-align: right; }
+.rates .amt.q { font-family: var(--body); font-size: 1rem; font-weight: 500; color: var(--ink-soft); }
+.examples { display: grid; gap: 10px; }
+.examples p { color: var(--ink-soft); }
+.examples strong { color: var(--ink); font-weight: 600; }
+
+/* Guarantee */
+.guar { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); align-items: center; padding: clamp(24px, 4vw, 44px); border: 1.5px solid var(--seal); border-radius: 4px; background: var(--sheet); }
+.guar .gseal { width: clamp(96px, 14vw, 140px); height: auto; filter: drop-shadow(0 6px 8px rgba(58, 42, 5, 0.3)); }
+.guar .txt { display: grid; gap: 14px; }
+@media (max-width: 560px) { .guar { grid-template-columns: minmax(0, 1fr); } }
+
+/* Partners / CTA */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: end; }
+@media (max-width: 760px) { .split { grid-template-columns: minmax(0, 1fr); align-items: start; } }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.mail { color: var(--ink-soft); font-size: 0.98rem; }
+.mail a { color: var(--ink); font-weight: 600; text-underline-offset: 4px; }
+
+/* FAQ */
+.faq { border-top: 2px solid var(--ink); }
+.faq details { border-bottom: 1px solid var(--rule); }
+.faq summary { list-style: none; cursor: pointer; padding: 18px 40px 18px 0; position: relative; font-family: var(--display); font-size: 1.3rem; line-height: 1.3; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-family: var(--body); font-size: 1.6rem; color: var(--seal); }
+.faq details[open] summary::after { content: "\2212"; }
+.faq .ans { padding: 0 40px 22px 0; color: var(--ink-soft); max-width: 68ch; }
+.faq summary:hover { color: var(--seal-deep); }
+
+/* Footer */
+.foot { border-top: 1px solid var(--rule); padding-block: 36px 48px; color: var(--ink-soft); font-size: 0.92rem; }
+.foot .wrap { display: grid; gap: 10px; }
+.foot .brand { margin: 0 0 6px; }
+.foot p { max-width: 70ch; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="sealpath" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/>
+    <symbol id="seal" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="2.2"/>
+      <circle cx="60" cy="60" r="53.5" fill="none" stroke="currentColor" stroke-width="0.8"/>
+      <circle cx="60" cy="60" r="37" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <text font-size="9" letter-spacing="2.1" fill="currentColor" font-family="Instrument Sans, Segoe UI, sans-serif" font-weight="600"><textPath href="#sealpath">ATTESTA TRANSLATION · CERTIFIED · </textPath></text>
+      <text x="60" y="73" text-anchor="middle" font-size="38" font-family="Newsreader, Georgia, serif" font-weight="600" fill="currentColor">A</text>
+    </symbol>
+    <symbol id="goldseal" viewBox="0 0 240 240">
+<defs>
+<linearGradient id="gsfoil" x1="0.12" y1="0.05" x2="0.88" y2="0.95">
+<stop offset="0" stop-color="#FBE88A"/><stop offset="0.28" stop-color="#E2B94A"/><stop offset="0.5" stop-color="#C9962B"/><stop offset="0.72" stop-color="#E8C560"/><stop offset="1" stop-color="#A9761B"/></linearGradient>
+<linearGradient id="gsrim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF6CF"/><stop offset="0.5" stop-color="#F0D98A"/><stop offset="1" stop-color="#D9B55A"/></linearGradient>
+<radialGradient id="gscenter" cx="0.38" cy="0.32" r="0.8"><stop offset="0" stop-color="#FFF0A8" stop-opacity="0.9"/><stop offset="0.55" stop-color="#E5BD50" stop-opacity="0.2"/><stop offset="1" stop-color="#B68622" stop-opacity="0"/></radialGradient>
+<linearGradient id="gsgloss" x1="0.1" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.5"/><stop offset="0.55" stop-color="#fff" stop-opacity="0.08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<clipPath id="gsclip"><polygon points="120.00,1.00 125.59,6.14 131.66,1.57 136.73,7.23 143.22,3.29 147.70,9.42 154.54,6.12 158.41,12.66 165.54,10.06 168.74,16.95 176.10,15.05 178.61,22.22 186.11,21.06 187.91,28.43 195.49,28.01 196.56,35.53 204.15,35.85 204.47,43.44 211.99,44.51 211.57,52.09 218.94,53.89 217.78,61.39 224.95,63.90 223.05,71.26 229.94,74.46 227.34,81.59 233.88,85.46 230.58,92.30 236.71,96.78 232.77,103.27 238.43,108.34 233.86,114.41 239.00,120.00 233.86,125.59 238.43,131.66 232.77,136.73 236.71,143.22 230.58,147.70 233.88,154.54 227.34,158.41 229.94,165.54 223.05,168.74 224.95,176.10 217.78,178.61 218.94,186.11 211.57,187.91 211.99,195.49 204.47,196.56 204.15,204.15 196.56,204.47 195.49,211.99 187.91,211.57 186.11,218.94 178.61,217.78 176.10,224.95 168.74,223.05 165.54,229.94 158.41,227.34 154.54,233.88 147.70,230.58 143.22,236.71 136.73,232.77 131.66,238.43 125.59,233.86 120.00,239.00 114.41,233.86 108.34,238.43 103.27,232.77 96.78,236.71 92.30,230.58 85.46,233.88 81.59,227.34 74.46,229.94 71.26,223.05 63.90,224.95 61.39,217.78 53.89,218.94 52.09,211.57 44.51,211.99 43.44,204.47 35.85,204.15 35.53,196.56 28.01,195.49 28.43,187.91 21.06,186.11 22.22,178.61 15.05,176.10 16.95,168.74 10.06,165.54 12.66,158.41 6.12,154.54 9.42,147.70 3.29,143.22 7.23,136.73 1.57,131.66 6.14,125.59 1.00,120.00 6.14,114.41 1.57,108.34 7.23,103.27 3.29,96.78 9.42,92.30 6.12,85.46 12.66,81.59 10.06,74.46 16.95,71.26 15.05,63.90 22.22,61.39 21.06,53.89 28.43,52.09 28.01,44.51 35.53,43.44 35.85,35.85 43.44,35.53 44.51,28.01 52.09,28.43 53.89,21.06 61.39,22.22 63.90,15.05 71.26,16.95 74.46,10.06 81.59,12.66 85.46,6.12 92.30,9.42 96.78,3.29 103.27,7.23 108.34,1.57 114.41,6.14"/></clipPath>
+<filter id="gssh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#3A2A05" flood-opacity="0.38"/></filter>
+</defs>
+<g>
+<polygon points="120.00,1.00 125.59,6.14 131.66,1.57 136.73,7.23 143.22,3.29 147.70,9.42 154.54,6.12 158.41,12.66 165.54,10.06 168.74,16.95 176.10,15.05 178.61,22.22 186.11,21.06 187.91,28.43 195.49,28.01 196.56,35.53 204.15,35.85 204.47,43.44 211.99,44.51 211.57,52.09 218.94,53.89 217.78,61.39 224.95,63.90 223.05,71.26 229.94,74.46 227.34,81.59 233.88,85.46 230.58,92.30 236.71,96.78 232.77,103.27 238.43,108.34 233.86,114.41 239.00,120.00 233.86,125.59 238.43,131.66 232.77,136.73 236.71,143.22 230.58,147.70 233.88,154.54 227.34,158.41 229.94,165.54 223.05,168.74 224.95,176.10 217.78,178.61 218.94,186.11 211.57,187.91 211.99,195.49 204.47,196.56 204.15,204.15 196.56,204.47 195.49,211.99 187.91,211.57 186.11,218.94 178.61,217.78 176.10,224.95 168.74,223.05 165.54,229.94 158.41,227.34 154.54,233.88 147.70,230.58 143.22,236.71 136.73,232.77 131.66,238.43 125.59,233.86 120.00,239.00 114.41,233.86 108.34,238.43 103.27,232.77 96.78,236.71 92.30,230.58 85.46,233.88 81.59,227.34 74.46,229.94 71.26,223.05 63.90,224.95 61.39,217.78 53.89,218.94 52.09,211.57 44.51,211.99 43.44,204.47 35.85,204.15 35.53,196.56 28.01,195.49 28.43,187.91 21.06,186.11 22.22,178.61 15.05,176.10 16.95,168.74 10.06,165.54 12.66,158.41 6.12,154.54 9.42,147.70 3.29,143.22 7.23,136.73 1.57,131.66 6.14,125.59 1.00,120.00 6.14,114.41 1.57,108.34 7.23,103.27 3.29,96.78 9.42,92.30 6.12,85.46 12.66,81.59 10.06,74.46 16.95,71.26 15.05,63.90 22.22,61.39 21.06,53.89 28.43,52.09 28.01,44.51 35.53,43.44 35.85,35.85 43.44,35.53 44.51,28.01 52.09,28.43 53.89,21.06 61.39,22.22 63.90,15.05 71.26,16.95 74.46,10.06 81.59,12.66 85.46,6.12 92.30,9.42 96.78,3.29 103.27,7.23 108.34,1.57 114.41,6.14" fill="url(#gsrim)" stroke="#B88A24" stroke-width="0.6" stroke-linejoin="miter"/>
+<polygon points="120.00,3.00 125.54,7.14 131.47,3.56 136.58,8.22 142.83,5.25 147.46,10.39 153.96,8.04 158.07,13.61 164.77,11.91 168.31,17.85 175.15,16.82 178.09,23.08 185.00,22.72 187.31,29.24 194.22,29.56 195.89,36.27 202.73,37.27 203.73,44.11 210.44,45.78 210.76,52.69 217.28,55.00 216.92,61.91 223.18,64.85 222.15,71.69 228.09,75.23 226.39,81.93 231.96,86.04 229.61,92.54 234.75,97.17 231.78,103.42 236.44,108.53 232.86,114.46 237.00,120.00 232.86,125.54 236.44,131.47 231.78,136.58 234.75,142.83 229.61,147.46 231.96,153.96 226.39,158.07 228.09,164.77 222.15,168.31 223.18,175.15 216.92,178.09 217.28,185.00 210.76,187.31 210.44,194.22 203.73,195.89 202.73,202.73 195.89,203.73 194.22,210.44 187.31,210.76 185.00,217.28 178.09,216.92 175.15,223.18 168.31,222.15 164.77,228.09 158.07,226.39 153.96,231.96 147.46,229.61 142.83,234.75 136.58,231.78 131.47,236.44 125.54,232.86 120.00,237.00 114.46,232.86 108.53,236.44 103.42,231.78 97.17,234.75 92.54,229.61 86.04,231.96 81.93,226.39 75.23,228.09 71.69,222.15 64.85,223.18 61.91,216.92 55.00,217.28 52.69,210.76 45.78,210.44 44.11,203.73 37.27,202.73 36.27,195.89 29.56,194.22 29.24,187.31 22.72,185.00 23.08,178.09 16.82,175.15 17.85,168.31 11.91,164.77 13.61,158.07 8.04,153.96 10.39,147.46 5.25,142.83 8.22,136.58 3.56,131.47 7.14,125.54 3.00,120.00 7.14,114.46 3.56,108.53 8.22,103.42 5.25,97.17 10.39,92.54 8.04,86.04 13.61,81.93 11.91,75.23 17.85,71.69 16.82,64.85 23.08,61.91 22.72,55.00 29.24,52.69 29.56,45.78 36.27,44.11 37.27,37.27 44.11,36.27 45.78,29.56 52.69,29.24 55.00,22.72 61.91,23.08 64.85,16.82 71.69,17.85 75.23,11.91 81.93,13.61 86.04,8.04 92.54,10.39 97.17,5.25 103.42,8.22 108.53,3.56 114.46,7.14" fill="url(#gsfoil)"/>
+<circle cx="120" cy="120" r="108" fill="url(#gscenter)"/>
+</g>
+<circle cx="120" cy="120" r="103" fill="none" stroke="#6A4608" stroke-opacity="0.7" stroke-width="1"/>
+<circle cx="120" cy="120" r="101.4" fill="none" stroke="#FFF4BE" stroke-opacity="0.8" stroke-width="0.6"/>
+<circle cx="120" cy="120" r="97" fill="none" stroke="#6A4608" stroke-width="1.6"/>
+<circle cx="120" cy="120" r="94" fill="none" stroke="#FFF4BE" stroke-opacity="0.8" stroke-width="0.7"/>
+<circle cx="120" cy="120" r="63" fill="none" stroke="#6A4608" stroke-width="1.6"/>
+<circle cx="120" cy="120" r="60.5" fill="none" stroke="#FFF4BE" stroke-opacity="0.8" stroke-width="0.7"/>
+<path transform="translate(50.16,98.04) rotate(-72.17) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#FFF4BE"/>
+<path transform="translate(54.32,87.79) rotate(-63.60) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#FFF4BE"/>
+<path transform="translate(59.76,78.58) rotate(-55.31) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#FFF4BE"/>
+<path transform="translate(66.46,70.25) rotate(-47.02) translate(-4.40,0) scale(0.00645,-0.00645)" d="M35 73 207 100V1242L35 1268V1341H1177V1000H1086L1054 1217Q942 1231 730 1231H522V739H873L904 887H993V475H904L873 627H522V110H775Q1033 110 1113 126L1170 374H1261L1242 0H35Z" fill="#FFF4BE"/>
+<path transform="translate(73.73,63.44) rotate(-39.30) translate(-3.67,0) scale(0.00645,-0.00645)" d="M109 411H197L242 196Q284 147 369.0 114.0Q454 81 545 81Q832 81 832 317Q832 391 777.5 442.0Q723 493 606 533Q434 590 358.5 625.5Q283 661 231.0 709.0Q179 757 148.0 825.5Q117 894 117 994Q117 1171 237.5 1263.5Q358 1356 590 1356Q758 1356 962 1313V994H873L828 1178Q726 1252 590 1252Q467 1252 401.0 1206.5Q335 1161 335 1067Q335 1000 390.0 952.5Q445 905 562 868Q791 793 876.5 737.5Q962 682 1007.0 600.0Q1052 518 1052 407Q1052 -20 549 -20Q434 -20 314.5 -0.5Q195 19 109 51Z" fill="#FFF4BE"/>
+<path transform="translate(81.85,57.66) rotate(-31.58) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#FFF4BE"/>
+<path transform="translate(91.68,52.59) rotate(-23.01) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#FFF4BE"/>
+<path transform="translate(107.23,47.92) rotate(-10.41) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#FFF4BE"/>
+<path transform="translate(118.22,46.74) rotate(-1.84) translate(-4.77,0) scale(0.00645,-0.00645)" d="M523 568V100L695 73V0H48V73L207 100V1242L35 1268V1341H676Q972 1341 1118.0 1250.0Q1264 1159 1264 966Q1264 678 994 596L1352 100L1497 73V0H1063L689 568ZM952 964Q952 1114 890.0 1172.5Q828 1231 663 1231H523V678H668Q822 678 887.0 742.0Q952 806 952 964Z" fill="#FFF4BE"/>
+<path transform="translate(129.63,47.25) rotate(7.01) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#FFF4BE"/>
+<path transform="translate(140.83,49.52) rotate(15.86) translate(-4.77,0) scale(0.00645,-0.00645)" d="M1155 1242 975 1268V1341H1452V1268L1280 1242V0H1163L336 1078V100L516 73V0H39V73L211 100V1242L39 1268V1341H498L1155 484Z" fill="#FFF4BE"/>
+<path transform="translate(150.54,53.03) rotate(23.87) translate(-3.67,0) scale(0.00645,-0.00645)" d="M109 411H197L242 196Q284 147 369.0 114.0Q454 81 545 81Q832 81 832 317Q832 391 777.5 442.0Q723 493 606 533Q434 590 358.5 625.5Q283 661 231.0 709.0Q179 757 148.0 825.5Q117 894 117 994Q117 1171 237.5 1263.5Q358 1356 590 1356Q758 1356 962 1313V994H873L828 1178Q726 1252 590 1252Q467 1252 401.0 1206.5Q335 1161 335 1067Q335 1000 390.0 952.5Q445 905 562 868Q791 793 876.5 737.5Q962 682 1007.0 600.0Q1052 518 1052 407Q1052 -20 549 -20Q434 -20 314.5 -0.5Q195 19 109 51Z" fill="#FFF4BE"/>
+<path transform="translate(159.36,57.66) rotate(31.59) translate(-4.40,0) scale(0.00645,-0.00645)" d="M729 1268 522 1242V106H795Q1008 106 1108 126L1190 405H1280L1242 0H35V73L207 100V1242L36 1268V1341H729Z" fill="#FFF4BE"/>
+<path transform="translate(168.32,64.14) rotate(40.16) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#FFF4BE"/>
+<path transform="translate(176.22,71.89) rotate(48.73) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#FFF4BE"/>
+<path transform="translate(181.66,78.89) rotate(55.60) translate(-2.57,0) scale(0.00645,-0.00645)" d="M556 100 728 74V0H69V74L241 100V1241L69 1268V1341H728V1268L556 1241Z" fill="#FFF4BE"/>
+<path transform="translate(186.55,87.14) rotate(63.03) translate(-5.13,0) scale(0.00645,-0.00645)" d="M432 672Q432 353 519.5 216.5Q607 80 797 80Q986 80 1073.5 217.0Q1161 354 1161 672Q1161 989 1073.5 1122.0Q986 1255 797 1255Q607 1255 519.5 1122.0Q432 989 432 672ZM100 672Q100 1356 797 1356Q1141 1356 1317.0 1182.5Q1493 1009 1493 672Q1493 331 1315.0 155.5Q1137 -20 797 -20Q458 -20 279.0 155.0Q100 330 100 672Z" fill="#FFF4BE"/>
+<path transform="translate(191.04,98.04) rotate(72.17) translate(-4.77,0) scale(0.00645,-0.00645)" d="M1155 1242 975 1268V1341H1452V1268L1280 1242V0H1163L336 1078V100L516 73V0H39V73L211 100V1242L39 1268V1341H498L1155 484Z" fill="#FFF4BE"/>
+<path transform="translate(49.56,97.34) rotate(-72.17) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#6A4608"/>
+<path transform="translate(53.72,87.09) rotate(-63.60) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#6A4608"/>
+<path transform="translate(59.16,77.88) rotate(-55.31) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#6A4608"/>
+<path transform="translate(65.86,69.55) rotate(-47.02) translate(-4.40,0) scale(0.00645,-0.00645)" d="M35 73 207 100V1242L35 1268V1341H1177V1000H1086L1054 1217Q942 1231 730 1231H522V739H873L904 887H993V475H904L873 627H522V110H775Q1033 110 1113 126L1170 374H1261L1242 0H35Z" fill="#6A4608"/>
+<path transform="translate(73.13,62.74) rotate(-39.30) translate(-3.67,0) scale(0.00645,-0.00645)" d="M109 411H197L242 196Q284 147 369.0 114.0Q454 81 545 81Q832 81 832 317Q832 391 777.5 442.0Q723 493 606 533Q434 590 358.5 625.5Q283 661 231.0 709.0Q179 757 148.0 825.5Q117 894 117 994Q117 1171 237.5 1263.5Q358 1356 590 1356Q758 1356 962 1313V994H873L828 1178Q726 1252 590 1252Q467 1252 401.0 1206.5Q335 1161 335 1067Q335 1000 390.0 952.5Q445 905 562 868Q791 793 876.5 737.5Q962 682 1007.0 600.0Q1052 518 1052 407Q1052 -20 549 -20Q434 -20 314.5 -0.5Q195 19 109 51Z" fill="#6A4608"/>
+<path transform="translate(81.25,56.96) rotate(-31.58) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#6A4608"/>
+<path transform="translate(91.08,51.89) rotate(-23.01) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#6A4608"/>
+<path transform="translate(106.63,47.22) rotate(-10.41) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#6A4608"/>
+<path transform="translate(117.62,46.04) rotate(-1.84) translate(-4.77,0) scale(0.00645,-0.00645)" d="M523 568V100L695 73V0H48V73L207 100V1242L35 1268V1341H676Q972 1341 1118.0 1250.0Q1264 1159 1264 966Q1264 678 994 596L1352 100L1497 73V0H1063L689 568ZM952 964Q952 1114 890.0 1172.5Q828 1231 663 1231H523V678H668Q822 678 887.0 742.0Q952 806 952 964Z" fill="#6A4608"/>
+<path transform="translate(129.03,46.55) rotate(7.01) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#6A4608"/>
+<path transform="translate(140.23,48.82) rotate(15.86) translate(-4.77,0) scale(0.00645,-0.00645)" d="M1155 1242 975 1268V1341H1452V1268L1280 1242V0H1163L336 1078V100L516 73V0H39V73L211 100V1242L39 1268V1341H498L1155 484Z" fill="#6A4608"/>
+<path transform="translate(149.94,52.33) rotate(23.87) translate(-3.67,0) scale(0.00645,-0.00645)" d="M109 411H197L242 196Q284 147 369.0 114.0Q454 81 545 81Q832 81 832 317Q832 391 777.5 442.0Q723 493 606 533Q434 590 358.5 625.5Q283 661 231.0 709.0Q179 757 148.0 825.5Q117 894 117 994Q117 1171 237.5 1263.5Q358 1356 590 1356Q758 1356 962 1313V994H873L828 1178Q726 1252 590 1252Q467 1252 401.0 1206.5Q335 1161 335 1067Q335 1000 390.0 952.5Q445 905 562 868Q791 793 876.5 737.5Q962 682 1007.0 600.0Q1052 518 1052 407Q1052 -20 549 -20Q434 -20 314.5 -0.5Q195 19 109 51Z" fill="#6A4608"/>
+<path transform="translate(158.76,56.96) rotate(31.59) translate(-4.40,0) scale(0.00645,-0.00645)" d="M729 1268 522 1242V106H795Q1008 106 1108 126L1190 405H1280L1242 0H35V73L207 100V1242L36 1268V1341H729Z" fill="#6A4608"/>
+<path transform="translate(167.72,63.44) rotate(40.16) translate(-4.77,0) scale(0.00645,-0.00645)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#6A4608"/>
+<path transform="translate(175.62,71.19) rotate(48.73) translate(-4.40,0) scale(0.00645,-0.00645)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#6A4608"/>
+<path transform="translate(181.06,78.19) rotate(55.60) translate(-2.57,0) scale(0.00645,-0.00645)" d="M556 100 728 74V0H69V74L241 100V1241L69 1268V1341H728V1268L556 1241Z" fill="#6A4608"/>
+<path transform="translate(185.95,86.44) rotate(63.03) translate(-5.13,0) scale(0.00645,-0.00645)" d="M432 672Q432 353 519.5 216.5Q607 80 797 80Q986 80 1073.5 217.0Q1161 354 1161 672Q1161 989 1073.5 1122.0Q986 1255 797 1255Q607 1255 519.5 1122.0Q432 989 432 672ZM100 672Q100 1356 797 1356Q1141 1356 1317.0 1182.5Q1493 1009 1493 672Q1493 331 1315.0 155.5Q1137 -20 797 -20Q458 -20 279.0 155.0Q100 330 100 672Z" fill="#6A4608"/>
+<path transform="translate(190.44,97.34) rotate(72.17) translate(-4.77,0) scale(0.00645,-0.00645)" d="M1155 1242 975 1268V1341H1452V1268L1280 1242V0H1163L336 1078V100L516 73V0H39V73L211 100V1242L39 1268V1341H498L1155 484Z" fill="#6A4608"/>
+<path transform="translate(75.67,191.08) rotate(32.55) translate(-5.06,0) scale(0.00684,-0.00684)" d="M815 -20Q478 -20 289.0 159.0Q100 338 100 655Q100 999 280.5 1177.5Q461 1356 814 1356Q1047 1356 1297 1289L1303 967H1213L1185 1161Q1053 1251 878 1251Q646 1251 539.0 1106.5Q432 962 432 658Q432 377 544.0 230.0Q656 83 870 83Q983 83 1067.5 113.0Q1152 143 1200 184L1232 404H1323L1317 64Q1227 29 1083.0 4.5Q939 -20 815 -20Z" fill="#FFF4BE"/>
+<path transform="translate(87.24,197.25) rotate(23.55) translate(-4.67,0) scale(0.00684,-0.00684)" d="M35 73 207 100V1242L35 1268V1341H1177V1000H1086L1054 1217Q942 1231 730 1231H522V739H873L904 887H993V475H904L873 627H522V110H775Q1033 110 1113 126L1170 374H1261L1242 0H35Z" fill="#FFF4BE"/>
+<path transform="translate(99.63,201.52) rotate(14.54) translate(-5.06,0) scale(0.00684,-0.00684)" d="M523 568V100L695 73V0H48V73L207 100V1242L35 1268V1341H676Q972 1341 1118.0 1250.0Q1264 1159 1264 966Q1264 678 994 596L1352 100L1497 73V0H1063L689 568ZM952 964Q952 1114 890.0 1172.5Q828 1231 663 1231H523V678H668Q822 678 887.0 742.0Q952 806 952 964Z" fill="#FFF4BE"/>
+<path transform="translate(112.54,203.81) rotate(5.54) translate(-4.67,0) scale(0.00684,-0.00684)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#FFF4BE"/>
+<path transform="translate(123.32,204.16) rotate(-1.87) translate(-2.72,0) scale(0.00684,-0.00684)" d="M556 100 728 74V0H69V74L241 100V1241L69 1268V1341H728V1268L556 1241Z" fill="#FFF4BE"/>
+<path transform="translate(133.67,203.17) rotate(-9.01) translate(-4.28,0) scale(0.00684,-0.00684)" d="M522 572V100L745 73V0H48V73L207 100V1242L35 1268V1341H1153V980H1059L1027 1217Q978 1224 865.0 1227.5Q752 1231 687 1231H522V682H849L880 852H969V400H880L849 572Z" fill="#FFF4BE"/>
+<path transform="translate(143.81,200.91) rotate(-16.14) translate(-2.72,0) scale(0.00684,-0.00684)" d="M556 100 728 74V0H69V74L241 100V1241L69 1268V1341H728V1268L556 1241Z" fill="#FFF4BE"/>
+<path transform="translate(153.96,197.25) rotate(-23.55) translate(-4.67,0) scale(0.00684,-0.00684)" d="M35 73 207 100V1242L35 1268V1341H1177V1000H1086L1054 1217Q942 1231 730 1231H522V739H873L904 887H993V475H904L873 627H522V110H775Q1033 110 1113 126L1170 374H1261L1242 0H35Z" fill="#FFF4BE"/>
+<path transform="translate(165.53,191.08) rotate(-32.55) translate(-5.06,0) scale(0.00684,-0.00684)" d="M1047 670Q1047 960 941.0 1095.5Q835 1231 596 1231H522V114Q618 106 696 106Q826 106 901.5 162.0Q977 218 1012.0 337.5Q1047 457 1047 670ZM673 1341Q1034 1341 1206.5 1177.5Q1379 1014 1379 678Q1379 333 1214.0 164.5Q1049 -4 715 -4L266 0H36V73L208 100V1242L36 1268V1341Z" fill="#FFF4BE"/>
+<path transform="translate(75.07,190.38) rotate(32.55) translate(-5.06,0) scale(0.00684,-0.00684)" d="M815 -20Q478 -20 289.0 159.0Q100 338 100 655Q100 999 280.5 1177.5Q461 1356 814 1356Q1047 1356 1297 1289L1303 967H1213L1185 1161Q1053 1251 878 1251Q646 1251 539.0 1106.5Q432 962 432 658Q432 377 544.0 230.0Q656 83 870 83Q983 83 1067.5 113.0Q1152 143 1200 184L1232 404H1323L1317 64Q1227 29 1083.0 4.5Q939 -20 815 -20Z" fill="#6A4608"/>
+<path transform="translate(86.64,196.55) rotate(23.55) translate(-4.67,0) scale(0.00684,-0.00684)" d="M35 73 207 100V1242L35 1268V1341H1177V1000H1086L1054 1217Q942 1231 730 1231H522V739H873L904 887H993V475H904L873 627H522V110H775Q1033 110 1113 126L1170 374H1261L1242 0H35Z" fill="#6A4608"/>
+<path transform="translate(99.03,200.82) rotate(14.54) translate(-5.06,0) scale(0.00684,-0.00684)" d="M523 568V100L695 73V0H48V73L207 100V1242L35 1268V1341H676Q972 1341 1118.0 1250.0Q1264 1159 1264 966Q1264 678 994 596L1352 100L1497 73V0H1063L689 568ZM952 964Q952 1114 890.0 1172.5Q828 1231 663 1231H523V678H668Q822 678 887.0 742.0Q952 806 952 964Z" fill="#6A4608"/>
+<path transform="translate(111.94,203.11) rotate(5.54) translate(-4.67,0) scale(0.00684,-0.00684)" d="M310 0V73L523 100V1235H472Q243 1235 150 1215L123 966H32V1341H1335V966H1243L1216 1215Q1133 1233 888 1233H839V100L1052 73V0Z" fill="#6A4608"/>
+<path transform="translate(122.72,203.46) rotate(-1.87) translate(-2.72,0) scale(0.00684,-0.00684)" d="M556 100 728 74V0H69V74L241 100V1241L69 1268V1341H728V1268L556 1241Z" fill="#6A4608"/>
+<path transform="translate(133.07,202.47) rotate(-9.01) translate(-4.28,0) scale(0.00684,-0.00684)" d="M522 572V100L745 73V0H48V73L207 100V1242L35 1268V1341H1153V980H1059L1027 1217Q978 1224 865.0 1227.5Q752 1231 687 1231H522V682H849L880 852H969V400H880L849 572Z" fill="#6A4608"/>
+<path transform="translate(143.21,200.21) rotate(-16.14) translate(-2.72,0) scale(0.00684,-0.00684)" d="M556 100 728 74V0H69V74L241 100V1241L69 1268V1341H728V1268L556 1241Z" fill="#6A4608"/>
+<path transform="translate(153.36,196.55) rotate(-23.55) translate(-4.67,0) scale(0.00684,-0.00684)" d="M35 73 207 100V1242L35 1268V1341H1177V1000H1086L1054 1217Q942 1231 730 1231H522V739H873L904 887H993V475H904L873 627H522V110H775Q1033 110 1113 126L1170 374H1261L1242 0H35Z" fill="#6A4608"/>
+<path transform="translate(164.93,190.38) rotate(-32.55) translate(-5.06,0) scale(0.00684,-0.00684)" d="M1047 670Q1047 960 941.0 1095.5Q835 1231 596 1231H522V114Q618 106 696 106Q826 106 901.5 162.0Q977 218 1012.0 337.5Q1047 457 1047 670ZM673 1341Q1034 1341 1206.5 1177.5Q1379 1014 1379 678Q1379 333 1214.0 164.5Q1049 -4 715 -4L266 0H36V73L208 100V1242L36 1268V1341Z" fill="#6A4608"/>
+<polygon points="63.43,169.67 64.47,172.45 67.43,172.58 65.11,174.42 65.90,177.27 63.43,175.64 60.97,177.27 61.76,174.42 59.44,172.58 62.40,172.45" fill="#FFF4BE"/>
+<polygon points="62.93,168.97 63.97,171.75 66.93,171.88 64.61,173.72 65.40,176.57 62.93,174.94 60.47,176.57 61.26,173.72 58.94,171.88 61.90,171.75" fill="#6A4608"/>
+<polygon points="177.57,169.67 178.60,172.45 181.56,172.58 179.24,174.42 180.03,177.27 177.57,175.64 175.10,177.27 175.89,174.42 173.57,172.58 176.53,172.45" fill="#FFF4BE"/>
+<polygon points="177.07,168.97 178.10,171.75 181.06,171.88 178.74,173.72 179.53,176.57 177.07,174.94 174.60,176.57 175.39,173.72 173.07,171.88 176.03,171.75" fill="#6A4608"/>
+<path transform="translate(87.68,149.10) scale(0.04492,-0.04492)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#FFF4BE"/>
+<path transform="translate(86.78,148.00) scale(0.04492,-0.04492)" d="M428 73V0H20V73L120 100L597 1352H887L1362 100L1464 73V0H867V73L1022 100L894 447H379L256 100ZM641 1150 420 557H856Z" fill="#6A4608"/>
+<line x1="92" y1="160" x2="148" y2="160" stroke="#6A4608" stroke-width="1.4"/>
+<line x1="92" y1="161.6" x2="148" y2="161.6" stroke="#FFF4BE" stroke-opacity="0.8" stroke-width="0.6"/>
+<g clip-path="url(#gsclip)"><path d="M12 120 C 12 60, 60 14, 128 12 C 150 12, 168 16, 184 24 C 120 40, 70 90, 52 168 C 30 156, 12 140, 12 120 Z" fill="url(#gsgloss)"/></g>
+<path d="M 36 78 A 92 92 0 0 1 96 30" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="2" stroke-linecap="round"/>
+</symbol>
+    <symbol id="tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#quote" data-i18n="skip">Skip to price estimate</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Attesta Translation">
+      <svg aria-hidden="true"><use href="#seal"/></svg>
+      <b>Attesta</b><span>Translation</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#how" data-i18n="nav_how">How it works</a>
+      <a href="#documents" data-i18n="nav_docs">Documents</a>
+      <a href="#pricing" data-i18n="nav_price">Pricing</a>
+      <a href="#partners" data-i18n="nav_partners">For attorneys</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+    </nav>
+    <button class="lang" id="langBtn" type="button" aria-label="Português">PT</button>
+    <a class="btn small" href="#quote" data-i18n="cta_price">Get a price</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- Hero + order tool -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1 data-i18n="h1">Certified translations for your USCIS filing</h1>
+      <p class="lede" data-i18n="lede">Portuguese, Spanish, French and Italian into English, with a signed Certificate of Translation Accuracy on every document. Delivered as a PDF.</p>
+      <ul class="facts">
+        <li><svg aria-hidden="true"><use href="#tick"/></svg><span data-i18n="fact1">$15 per page. $12.50 per page when your order is over 10 pages.</span></li>
+        <li><svg aria-hidden="true"><use href="#tick"/></svg><span data-i18n="fact2">Your translation mirrors the layout of your original.</span></li>
+        <li><svg aria-hidden="true"><use href="#tick"/></svg><span data-i18n="fact3">Free redo if the translation causes a rejection or an RFE.</span></li>
+      </ul>
+    </div>
+
+    <form class="tool" id="quote" aria-labelledby="toolTitle" novalidate>
+      <h2 id="toolTitle" data-i18n="tool_title">Get your price</h2>
+
+      <div class="field">
+        <label for="docLang" data-i18n="lbl_lang">Language of your document</label>
+        <select id="docLang">
+          <option value="pt" data-i18n="opt_pt">Portuguese</option>
+          <option value="es" data-i18n="opt_es">Spanish</option>
+          <option value="fr" data-i18n="opt_fr">French</option>
+          <option value="it" data-i18n="opt_it">Italian (confirmed before you pay)</option>
+        </select>
+        <p class="into" data-i18n="into">Translated into English</p>
+      </div>
+
+      <div class="field">
+        <label for="fileIn" data-i18n="lbl_files">Your documents</label>
+        <div class="drop" id="drop">
+          <input type="file" id="fileIn" multiple accept=".pdf,.jpg,.jpeg,.png,.heic,application/pdf,image/*">
+          <strong data-i18n="drop_main">Drop files here or choose files</strong>
+          <span class="hint" data-i18n="drop_hint">PDF, JPG, PNG or HEIC. Phone photos are fine if every edge and stamp is readable.</span>
+        </div>
+        <ul class="files" id="fileList" aria-live="polite"></ul>
+      </div>
+
+      <div class="field">
+        <label for="pages" data-i18n="lbl_pages">Pages</label>
+        <div class="num">
+          <button type="button" id="minus" aria-label="Fewer pages">&minus;</button>
+          <input id="pages" type="number" inputmode="numeric" min="1" max="200" value="1">
+          <button type="button" id="plus" aria-label="More pages">+</button>
+        </div>
+        <p class="hint" data-i18n="pages_hint">One page is up to 250 words. We confirm the page count before you pay.</p>
+      </div>
+
+      <fieldset class="field">
+        <legend data-i18n="lbl_speed">Turnaround</legend>
+        <div class="choice">
+          <label><input type="radio" name="speed" value="std" checked><span id="optStd">Standard, 2 business days</span></label>
+          <label><input type="radio" name="speed" value="rush"><span id="optRush">Rush, 24 hours</span></label>
+        </div>
+      </fieldset>
+
+      <dl class="totals" aria-live="polite">
+        <div><dt id="tPagesLbl">1 page at $15.00</dt><dd id="tPages">$15.00</dd></div>
+        <div id="tRushRow" hidden><dt data-i18n="t_rush">Rush, 24 hours</dt><dd id="tRush">$0.00</dd></div>
+        <div class="sum"><dt data-i18n="t_total">Total</dt><dd id="tTotal">$15.00</dd></div>
+      </dl>
+      <p class="hint" data-i18n="notary_note">Notarization and a mailed printed copy are available on request. USCIS does not require notarization.</p>
+
+      <button class="btn" type="submit" id="startBtn" data-i18n="start">Start my order</button>
+      <div class="preview" id="previewNote" role="status" hidden>
+        <strong data-i18n="prev_title">Almost there. Send us your documents to start.</strong>
+        <span id="prevBody"></span>
+        <span class="actions" style="margin-top:10px">
+          <a class="btn small" id="pvMail" href="#" data-i18n="pv_mail">Email my documents</a>
+          <a class="btn small ghost" id="pvWa" href="#" target="_blank" rel="noopener" data-i18n="pv_wa">Send on WhatsApp</a>
+        </span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Mirror -->
+<section class="band deep" id="mirror" aria-labelledby="mirrorH">
+  <div class="wrap mirror-grid">
+    <div class="rule-copy">
+      <h2 id="mirrorH" data-i18n="mirror_h">Your translation looks like your document</h2>
+      <p class="prose" data-i18n="mirror_p">Same fields, same order, same page structure. Seals, stamps and signatures that can't be translated are described in brackets, so a reviewer can hold the two side by side.</p>
+    </div>
+    <div class="mirror-wrap">
+      <div class="mirror" id="mirror2" role="group" aria-labelledby="mirrorCap">
+        <!-- Original (Portuguese), fictional data -->
+        <div class="doc pt" lang="pt-BR">
+          <div class="wm" aria-hidden="true">AMOSTRA</div>
+          <p class="dt">CERTIDÃO DE NASCIMENTO</p>
+          <div class="fields">
+            <div class="f"><span class="l">Nome</span><span class="v">MARIA EXEMPLO DA SILVA</span></div>
+            <div class="f s3"><span class="l">Data de nascimento</span><span class="v">14 de março de 1990</span></div>
+            <div class="f s3"><span class="l">Sexo</span><span class="v">Feminino</span></div>
+            <div class="f"><span class="l">Local de nascimento</span><span class="v">Cidade Exemplo, Estado Exemplo</span></div>
+            <div class="f"><span class="l">Filiação</span><span class="v">JOÃO EXEMPLO DA SILVA<br>ANA EXEMPLO DA SILVA</span></div>
+            <div class="f"><span class="l">Matrícula</span><span class="v">000000 00 00 0000 0 00000 000 0000000 00</span></div>
+          </div>
+          <div class="sig">
+            <svg class="stamp" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="50" y="46" text-anchor="middle" font-size="10" font-family="Instrument Sans, sans-serif" font-weight="700" fill="currentColor">CARTÓRIO</text><text x="50" y="60" text-anchor="middle" font-size="10" font-family="Instrument Sans, sans-serif" font-weight="700" fill="currentColor">EXEMPLO</text></svg>
+            <div>
+              <svg class="scrawl" viewBox="0 0 200 50" aria-hidden="true"><path d="M6 36c14-26 22-30 26-20s-10 24-2 22 20-26 30-24 0 22 14 18 18-16 26-14 8 12 22 8 26-14 40-10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              <p class="who">Oficial de registro</p>
+            </div>
+          </div>
+        </div>
+        <!-- English translation -->
+        <div class="doc en" lang="en">
+          <div class="wm" aria-hidden="true">SAMPLE</div>
+          <p class="dt">BIRTH CERTIFICATE</p>
+          <div class="fields">
+            <div class="f"><span class="l">Name</span><span class="v">MARIA EXEMPLO DA SILVA</span></div>
+            <div class="f s3"><span class="l">Date of birth</span><span class="v">March 14, 1990</span></div>
+            <div class="f s3"><span class="l">Sex</span><span class="v">Female</span></div>
+            <div class="f"><span class="l">Place of birth</span><span class="v">Cidade Exemplo, Estado Exemplo</span></div>
+            <div class="f"><span class="l">Parents</span><span class="v">JOÃO EXEMPLO DA SILVA<br>ANA EXEMPLO DA SILVA</span></div>
+            <div class="f"><span class="l">Registration number</span><span class="v">000000 00 00 0000 0 00000 000 0000000 00</span></div>
+          </div>
+          <div class="sig">
+            <p class="note">[Stamp: Cidade Exemplo Registry Office]</p>
+            <div>
+              <p class="note">[Signature]</p>
+              <p class="who">Registrar</p>
+            </div>
+          </div>
+        </div>
+        <span class="tag l1" data-i18n="tag_orig">Original, Portuguese</span>
+        <span class="tag r1" data-i18n="tag_trans">English translation</span>
+        <div class="handle" aria-hidden="true"><div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></div></div>
+        <input class="mirror-range" id="mirrorRange" type="range" min="0" max="100" step="5" value="50" aria-label="Compare original and translation">
+      </div>
+      <p class="mirror-note" id="mirrorCap" data-i18n="mirror_cap">Drag to compare the original and the English translation. Sample document with fictional data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="band" id="how" aria-labelledby="howH">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="howH" data-i18n="how_h">How it works</h2></div>
+    <ol class="steps">
+      <li><h3 data-i18n="s1_h">Upload your documents</h3><p data-i18n="s1_p">Add scans or phone photos and choose the language. You see a price right away.</p></li>
+      <li><h3 data-i18n="s2_h">We check your files</h3><p data-i18n="s2_p">We confirm the page count and tell you before you pay if a page is cut off, blurred or missing its back side.</p></li>
+      <li><h3 data-i18n="s3_h">We translate and sign</h3><p data-i18n="s3_p">Every document is translated in full and signed with a Certificate of Translation Accuracy.</p></li>
+      <li><h3 data-i18n="s4_h">You receive a PDF</h3><p data-i18n="s4_p">Download the translation, the certificate and your original in one file, ready to attach to your filing.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- The rule + certificate -->
+<section class="band deep" id="certificate" aria-labelledby="ruleH">
+  <div class="wrap rule-grid">
+    <div class="rule-copy">
+      <h2 id="ruleH" data-i18n="rule_h">What USCIS asks for</h2>
+      <p class="prose" data-i18n="rule_p1">A document in another language needs a complete English translation and a statement from the translator that they are competent in both languages and that the translation is accurate (8 CFR 103.2(b)(3)). That statement is the certificate you see here.</p>
+      <p class="prose" data-i18n="rule_p2">Notarization is not part of that rule. USCIS also does not approve or keep a list of translators or translation companies.</p>
+    </div>
+    <div class="cert-wrap">
+      <div class="cert" role="img" aria-label="Sample Certificate of Translation Accuracy with fictional data">
+        <div class="cert-in">
+          <div class="wm" aria-hidden="true">SAMPLE</div>
+          <p class="fn">ATTESTA TRANSLATION</p>
+          <p class="ct">Certificate of Translation Accuracy</p>
+          <p class="body">I, [translator name], certify that I am competent to translate from Portuguese into English, and that the attached translation of the document identified below is complete and accurate to the best of my knowledge and ability.</p>
+          <dl>
+            <dt>Source document</dt><dd>Birth certificate (sample)</dd>
+            <dt>Languages</dt><dd>Portuguese to English</dd>
+            <dt>Pages translated</dt><dd>1</dd>
+            <dt>Date signed</dt><dd>[MM/DD/YYYY]</dd>
+          </dl>
+          <div class="sign">
+            <div><div class="line"></div><p class="cap">Translator signature</p></div>
+            <svg class="seal" viewBox="0 0 240 240" aria-hidden="true"><use href="#goldseal"/></svg>
+          </div>
+        </div>
+      </div>
+      <p class="mirror-note" data-i18n="cert_cap">Sample certificate with placeholder details. Each real certificate carries the translator's name and signature.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Documents -->
+<section class="band" id="documents" aria-labelledby="docsH">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="docsH" data-i18n="docs_h">Documents we translate</h2></div>
+    <ul class="index">
+      <li><h3 data-i18n="d1_h">Birth certificate</h3><p data-i18n="d1_p">Full and short form, with margin notes and the back side.</p></li>
+      <li><h3 data-i18n="d2_h">Marriage certificate</h3><p data-i18n="d2_p">Including annotations such as a divorce or a change of name.</p></li>
+      <li><h3 data-i18n="d3_h">Police and criminal record</h3><p data-i18n="d3_p">Certificates of background and records from courts or police.</p></li>
+      <li><h3 data-i18n="d4_h">Diploma and transcript</h3><p data-i18n="d4_p">Degrees, course lists and grades, with every stamp and note.</p></li>
+      <li><h3 data-i18n="d5_h">Bank statement</h3><p data-i18n="d5_p">Every line translated, with amounts kept in the original currency.</p></li>
+      <li><h3 data-i18n="d6_h">Divorce decree</h3><p data-i18n="d6_p">Court decrees and the certificates that record them.</p></li>
+    </ul>
+    <p class="more" data-i18n="docs_more">Something else? Send it in and you get a price before you pay.</p>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="band deep" id="pricing" aria-labelledby="priceH">
+  <div class="wrap price-grid">
+    <div class="rule-copy">
+      <h2 id="priceH" data-i18n="price_h">Pricing</h2>
+      <div class="examples">
+        <p data-i18n-html="price_ex">A 3-page order is <strong>$45.00</strong>. A 12-page order is <strong>$150.00</strong>.</p>
+        <p data-i18n="price_page">A page is up to 250 words. Dense pages, tables and handwriting are confirmed before you pay.</p>
+        <p data-i18n="price_it">Italian is confirmed before you pay.</p>
+      </div>
+    </div>
+    <ul class="rates">
+      <li><span class="what" data-i18n="r1">1 to 10 pages</span><span class="amt" id="r1a">$15.00 / page</span></li>
+      <li><span class="what"><span data-i18n="r2">Over 10 pages</span><small data-i18n="r2s">The lower rate applies to the whole order.</small></span><span class="amt" id="r2a">$12.50 / page</span></li>
+      <li><span class="what"><span data-i18n="r3">Rush, 24 hours</span><small data-i18n="r3s">Added to each page.</small></span><span class="amt" id="r3a">+$10.00 / page</span></li>
+      <li><span class="what" data-i18n="r4">Notarization</span><span class="amt q" data-i18n="onreq">On request</span></li>
+      <li><span class="what" data-i18n="r5">Mailed printed copy</span><span class="amt q" data-i18n="onreq2">On request</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- Guarantee -->
+<section class="band" aria-labelledby="guarH">
+  <div class="wrap">
+    <div class="guar">
+      <svg class="gseal" viewBox="0 0 240 240" aria-hidden="true"><use href="#goldseal"/></svg>
+      <div class="txt">
+        <h2 id="guarH" data-i18n="guar_h">If the translation causes a problem, we redo it</h2>
+        <p class="prose" data-i18n="guar_p">If USCIS rejects a filing or issues an RFE because of our translation, we correct it and reissue the certificate at no charge. We can't promise how your case turns out. That is USCIS's decision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners -->
+<section class="band deep" id="partners" aria-labelledby="partH">
+  <div class="wrap split">
+    <div class="rule-copy">
+      <h2 id="partH" data-i18n="part_h">For attorneys, paralegals and consultants</h2>
+      <p class="prose" data-i18n="part_p">Send documents in bulk and receive one invoice. Partner rates are available for regular volume. Certificates can be attached to your exhibits as they are.</p>
+    </div>
+    <div class="actions">
+      <a class="btn ghost" id="partnerBtn" href="mailto:hello@attestatranslation.com?subject=Partner%20rates" data-i18n="part_cta">Ask about partner rates</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="band" id="faq" aria-labelledby="faqH">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="faqH" data-i18n="faq_h">Questions</h2></div>
+    <div class="faq">
+      <details><summary data-i18n="q1">Does USCIS require a notarized translation?</summary><p class="ans" data-i18n="a1">No. USCIS asks for a complete English translation and the translator's signed certification of competence and accuracy. Some other offices ask for notarization, and we can arrange it on request.</p></details>
+      <details><summary data-i18n="q2">Are you a USCIS-approved translator?</summary><p class="ans" data-i18n="a2">USCIS does not approve or certify translators or translation companies, so nobody can honestly claim that. Our certificate contains the statements the USCIS rule asks for.</p></details>
+      <details><summary data-i18n="q3">Which languages do you translate?</summary><p class="ans" data-i18n="a3">Portuguese, Spanish and French into English. Italian into English on request. If you need another direction, such as English into Portuguese, ask us before you order.</p></details>
+      <details><summary data-i18n="q4">Do you make sworn translations for Brazil, Italy, France or Spain?</summary><p class="ans" data-i18n="a4">Not at this time. A certified translation for a US filing is different from a sworn translation made by a translator appointed in another country. If you need one, tell us and we will say before you order whether we can help.</p></details>
+      <details><summary data-i18n="q5">Can I send photos from my phone?</summary><p class="ans" data-i18n="a5">Yes, if every edge, stamp and handwritten note is readable. Include the back of any document that has writing on it. We tell you before you pay if something needs a better scan.</p></details>
+      <details><summary data-i18n="q6">How do you handle my files?</summary><p class="ans" data-i18n="a6">Passports and civil records are sensitive. Uploads travel over an encrypted connection, are used only to prepare your translation, and are deleted on a fixed schedule that we state at checkout.</p></details>
+      <details><summary data-i18n="q7">Do you give immigration advice?</summary><p class="ans" data-i18n="a7">No. Attesta Translation translates documents. It is not a law firm and can't tell you which documents your case needs. Ask your attorney or accredited representative.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Closing -->
+<section class="band deep" aria-labelledby="endH">
+  <div class="wrap split">
+    <div class="rule-copy">
+      <h2 id="endH" data-i18n="end_h">Send your documents and see your price</h2>
+      <p class="mail" id="mailLine"><span data-i18n="end_mail">Questions before you order? Write to</span> <a href="mailto:hello@attestatranslation.com">hello@attestatranslation.com</a></p>
+    </div>
+    <div class="actions">
+      <a class="btn" href="#quote" data-i18n="cta_price2">Get a price</a>
+      <a class="btn ghost wa" id="waBtn" href="#" target="_blank" rel="noopener" data-i18n="wa_cta">Message us on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Attesta Translation"><svg aria-hidden="true"><use href="#seal"/></svg><b>Attesta</b><span>Translation</span></a>
+    <p data-i18n="foot_disc">Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.</p>
+    <p>&copy; 2026 Attesta Translation</p>
+  </div>
+</footer>
+
+<script>
+/* ---- Settings you will change before launch ---------------------------------------------------- */
+var CONFIG = {
+  email: "hello@attestatranslation.com",   // live mailbox
+  whatsapp: "14083558159",                  // digits only; used for the button, never printed on the page
+  ratePerPage: 15,                          // 1 to 10 pages
+  volumeRatePerPage: 12.5,                  // orders over 10 pages (applies to the whole order)
+  volumeFrom: 11,
+  rushPerPage: 10,                          // placeholder rush surcharge, per page
+  standardDays: 2,                          // placeholder turnaround promises
+  maxPages: 200
+};
+
+/* ---- Copy ---------------------------------------------------------------------------------------- */
+var T = {
+en: {
+  skip: "Skip to price estimate", nav_how: "How it works", nav_docs: "Documents", nav_price: "Pricing", nav_partners: "For attorneys", nav_faq: "FAQ",
+  cta_price: "Get a price", cta_price2: "Get a price",
+  h1: "Certified translations for your USCIS filing",
+  lede: "Portuguese, Spanish, French and Italian into English, with a signed Certificate of Translation Accuracy on every document. Delivered as a PDF.",
+  fact1: "$15 per page. $12.50 per page when your order is over 10 pages.",
+  fact2: "Your translation mirrors the layout of your original.",
+  fact3: "Free redo if the translation causes a rejection or an RFE.",
+  tool_title: "Get your price", lbl_lang: "Language of your document",
+  opt_pt: "Portuguese", opt_es: "Spanish", opt_fr: "French", opt_it: "Italian (confirmed before you pay)", into: "Translated into English",
+  lbl_files: "Your documents", drop_main: "Drop files here or choose files",
+  drop_hint: "PDF, JPG, PNG or HEIC. Phone photos are fine if every edge and stamp is readable.",
+  lbl_pages: "Pages", pages_hint: "One page is up to 250 words. We confirm the page count before you pay.",
+  lbl_speed: "Turnaround", t_rush: "Rush, 24 hours", t_total: "Total",
+  notary_note: "Notarization and a mailed printed copy are available on request. USCIS does not require notarization.",
+  start: "Start my order", prev_title: "Almost there. Send us your documents to start.", pv_mail: "Email my documents", pv_wa: "Send on WhatsApp", mail_subj: "Translation order", mail_body: function (lang, n, speed, total) { return "Hello,\n\nI would like a certified translation.\n\nLanguage: " + lang + " into English\nPages: " + n + "\nTurnaround: " + speed + "\nEstimated total: " + total + "\n\nMy documents are attached.\n"; },
+  mirror_h: "Your translation looks like your document",
+  mirror_p: "Same fields, same order, same page structure. Seals, stamps and signatures that can't be translated are described in brackets, so a reviewer can hold the two side by side.",
+  tag_orig: "Original, Portuguese", tag_trans: "English translation",
+  mirror_cap: "Drag to compare the original and the English translation. Sample document with fictional data.",
+  how_h: "How it works",
+  s1_h: "Upload your documents", s1_p: "Add scans or phone photos and choose the language. You see a price right away.",
+  s2_h: "We check your files", s2_p: "We confirm the page count and tell you before you pay if a page is cut off, blurred or missing its back side.",
+  s3_h: "We translate and sign", s3_p: "Every document is translated in full and signed with a Certificate of Translation Accuracy.",
+  s4_h: "You receive a PDF", s4_p: "Download the translation, the certificate and your original in one file, ready to attach to your filing.",
+  rule_h: "What USCIS asks for",
+  rule_p1: "A document in another language needs a complete English translation and a statement from the translator that they are competent in both languages and that the translation is accurate (8 CFR 103.2(b)(3)). That statement is the certificate you see here.",
+  rule_p2: "Notarization is not part of that rule. USCIS also does not approve or keep a list of translators or translation companies.",
+  cert_cap: "Sample certificate with placeholder details. Each real certificate carries the translator's name and signature.",
+  docs_h: "Documents we translate",
+  d1_h: "Birth certificate", d1_p: "Full and short form, with margin notes and the back side.",
+  d2_h: "Marriage certificate", d2_p: "Including annotations such as a divorce or a change of name.",
+  d3_h: "Police and criminal record", d3_p: "Certificates of background and records from courts or police.",
+  d4_h: "Diploma and transcript", d4_p: "Degrees, course lists and grades, with every stamp and note.",
+  d5_h: "Bank statement", d5_p: "Every line translated, with amounts kept in the original currency.",
+  d6_h: "Divorce decree", d6_p: "Court decrees and the certificates that record them.",
+  docs_more: "Something else? Send it in and you get a price before you pay.",
+  price_h: "Pricing", price_ex: "A 3-page order is <strong>{a}</strong>. A 12-page order is <strong>{b}</strong>.",
+  price_page: "A page is up to 250 words. Dense pages, tables and handwriting are confirmed before you pay.",
+  price_it: "Italian is confirmed before you pay.",
+  r1: "1 to 10 pages", r2: "Over 10 pages", r2s: "The lower rate applies to the whole order.", r3: "Rush, 24 hours", r3s: "Added to each page.",
+  r4: "Notarization", r5: "Mailed printed copy", onreq: "On request", onreq2: "On request", per: "/ page",
+  guar_h: "If the translation causes a problem, we redo it",
+  guar_p: "If USCIS rejects a filing or issues an RFE because of our translation, we correct it and reissue the certificate at no charge. We can't promise how your case turns out. That is USCIS's decision.",
+  part_h: "For attorneys, paralegals and consultants",
+  part_p: "Send documents in bulk and receive one invoice. Partner rates are available for regular volume. Certificates can be attached to your exhibits as they are.",
+  part_cta: "Ask about partner rates",
+  faq_h: "Questions",
+  q1: "Does USCIS require a notarized translation?", a1: "No. USCIS asks for a complete English translation and the translator's signed certification of competence and accuracy. Some other offices ask for notarization, and we can arrange it on request.",
+  q2: "Are you a USCIS-approved translator?", a2: "USCIS does not approve or certify translators or translation companies, so nobody can honestly claim that. Our certificate contains the statements the USCIS rule asks for.",
+  q3: "Which languages do you translate?", a3: "Portuguese, Spanish and French into English. Italian into English on request. If you need another direction, such as English into Portuguese, ask us before you order.",
+  q4: "Do you make sworn translations for Brazil, Italy, France or Spain?", a4: "Not at this time. A certified translation for a US filing is different from a sworn translation made by a translator appointed in another country. If you need one, tell us and we will say before you order whether we can help.",
+  q5: "Can I send photos from my phone?", a5: "Yes, if every edge, stamp and handwritten note is readable. Include the back of any document that has writing on it. We tell you before you pay if something needs a better scan.",
+  q6: "How do you handle my files?", a6: "Passports and civil records are sensitive. Uploads travel over an encrypted connection, are used only to prepare your translation, and are deleted on a fixed schedule that we state at checkout.",
+  q7: "Do you give immigration advice?", a7: "No. Attesta Translation translates documents. It is not a law firm and can't tell you which documents your case needs. Ask your attorney or accredited representative.",
+  end_h: "Send your documents and see your price", end_mail: "Questions before you order? Write to", wa_cta: "Message us on WhatsApp", wa_text: "Hello, I have a question about a certified translation.",
+  foot_disc: "Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.",
+  langBtn: "PT", langAria: "Português",
+  optStd: function (d) { return "Standard, " + d + " business days"; },
+  optRush: function (r) { return "Rush, 24 hours (+" + r + " per page)"; },
+  pagesLbl: function (n, r) { return n + (n === 1 ? " page" : " pages") + " at " + r; },
+  fewer: "Fewer pages", more: "More pages", remove: "Remove file", mirrorAria: "Compare original and translation",
+  prevBody: function (n, total, f) { return "Your price for " + n + (n === 1 ? " page" : " pages") + " is " + total + ". We confirm the page count, then send you a secure payment link before we start. Files you add here are not uploaded; attach them to your email or message."; }
+},
+pt: {
+  skip: "Ir para a estimativa de preço", nav_how: "Como funciona", nav_docs: "Documentos", nav_price: "Preços", nav_partners: "Para advogados", nav_faq: "Dúvidas",
+  cta_price: "Ver preço", cta_price2: "Ver preço",
+  h1: "Traduções certificadas para o seu processo no USCIS",
+  lede: "Do português, espanhol, francês e italiano para o inglês, com Certificado de Exatidão da Tradução assinado em cada documento. Entregue em PDF.",
+  fact1: "US$ 15 por página. US$ 12,50 por página quando o pedido passa de 10 páginas.",
+  fact2: "A tradução reproduz o layout do seu original.",
+  fact3: "Refazemos sem custo se a tradução causar uma rejeição ou um RFE.",
+  tool_title: "Veja o seu preço", lbl_lang: "Idioma do seu documento",
+  opt_pt: "Português", opt_es: "Espanhol", opt_fr: "Francês", opt_it: "Italiano (confirmado antes do pagamento)", into: "Tradução para o inglês",
+  lbl_files: "Seus documentos", drop_main: "Solte os arquivos aqui ou escolha arquivos",
+  drop_hint: "PDF, JPG, PNG ou HEIC. Fotos do celular servem se todas as bordas e carimbos estiverem legíveis.",
+  lbl_pages: "Páginas", pages_hint: "Uma página tem até 250 palavras. Confirmamos o número de páginas antes do pagamento.",
+  lbl_speed: "Prazo", t_rush: "Urgente, 24 horas", t_total: "Total",
+  notary_note: "Notarização e cópia impressa enviada pelo correio estão disponíveis sob consulta. O USCIS não exige notarização.",
+  start: "Iniciar meu pedido", prev_title: "Quase lá. Envie seus documentos para começar.", pv_mail: "Enviar documentos por e-mail", pv_wa: "Enviar pelo WhatsApp", mail_subj: "Pedido de tradução", mail_body: function (lang, n, speed, total) { return "Olá,\n\nGostaria de uma tradução certificada.\n\nIdioma: " + lang + " para inglês\nPáginas: " + n + "\nPrazo: " + speed + "\nTotal estimado: " + total + "\n\nSeguem meus documentos em anexo.\n"; },
+  mirror_h: "A tradução tem a aparência do seu documento",
+  mirror_p: "Mesmos campos, mesma ordem, mesma estrutura de página. Selos, carimbos e assinaturas que não podem ser traduzidos são descritos entre colchetes, para que o analista compare os dois lado a lado.",
+  tag_orig: "Original, português", tag_trans: "Tradução em inglês",
+  mirror_cap: "Arraste para comparar o original e a tradução em inglês. Documento de exemplo com dados fictícios.",
+  how_h: "Como funciona",
+  s1_h: "Envie seus documentos", s1_p: "Adicione digitalizações ou fotos do celular e escolha o idioma. O preço aparece na hora.",
+  s2_h: "Conferimos seus arquivos", s2_p: "Confirmamos o número de páginas e avisamos antes do pagamento se alguma página estiver cortada, borrada ou sem o verso.",
+  s3_h: "Traduzimos e assinamos", s3_p: "Cada documento é traduzido por completo e assinado com um Certificado de Exatidão da Tradução.",
+  s4_h: "Você recebe um PDF", s4_p: "Baixe a tradução, o certificado e o seu original em um único arquivo, pronto para anexar ao seu processo.",
+  rule_h: "O que o USCIS exige",
+  rule_p1: "Um documento em outro idioma precisa de uma tradução completa para o inglês e de uma declaração do tradutor de que ele é competente nos dois idiomas e de que a tradução é exata (8 CFR 103.2(b)(3)). Essa declaração é o certificado que você vê aqui.",
+  rule_p2: "A notarização não faz parte dessa regra. O USCIS também não aprova nem mantém uma lista de tradutores ou empresas de tradução.",
+  cert_cap: "Certificado de exemplo com dados de preenchimento. Cada certificado real traz o nome e a assinatura do tradutor.",
+  docs_h: "Documentos que traduzimos",
+  d1_h: "Certidão de nascimento", d1_p: "Inteiro teor e resumida, com averbações e o verso.",
+  d2_h: "Certidão de casamento", d2_p: "Inclusive averbações, como divórcio ou mudança de nome.",
+  d3_h: "Antecedentes criminais", d3_p: "Certidões de antecedentes e registros de tribunais ou da polícia.",
+  d4_h: "Diploma e histórico escolar", d4_p: "Diplomas, listas de disciplinas e notas, com todos os carimbos e anotações.",
+  d5_h: "Extrato bancário", d5_p: "Todas as linhas traduzidas, com os valores mantidos na moeda original.",
+  d6_h: "Sentença de divórcio", d6_p: "Sentenças judiciais e as certidões que as registram.",
+  docs_more: "Outro documento? Envie e você recebe o preço antes de pagar.",
+  price_h: "Preços", price_ex: "Um pedido de 3 páginas custa <strong>{a}</strong>. Um pedido de 12 páginas custa <strong>{b}</strong>.",
+  price_page: "Uma página tem até 250 palavras. Páginas densas, tabelas e texto manuscrito são confirmados antes do pagamento.",
+  price_it: "O italiano é confirmado antes do pagamento.",
+  r1: "De 1 a 10 páginas", r2: "Acima de 10 páginas", r2s: "A tarifa menor vale para o pedido inteiro.", r3: "Urgente, 24 horas", r3s: "Somado a cada página.",
+  r4: "Notarização", r5: "Cópia impressa pelo correio", onreq: "Sob consulta", onreq2: "Sob consulta", per: "/ página",
+  guar_h: "Se a tradução causar um problema, nós a refazemos",
+  guar_p: "Se o USCIS rejeitar um pedido ou emitir um RFE por causa da nossa tradução, corrigimos e emitimos o certificado de novo, sem custo. Não podemos prometer o resultado do seu caso. Essa decisão é do USCIS.",
+  part_h: "Para advogados, paralegais e consultores",
+  part_p: "Envie documentos em lote e receba uma única fatura. Há tarifas de parceiro para volume recorrente. Os certificados podem ser anexados aos seus exhibits do jeito que estão.",
+  part_cta: "Consultar tarifas de parceiro",
+  faq_h: "Dúvidas",
+  q1: "O USCIS exige tradução notarizada?", a1: "Não. O USCIS pede uma tradução completa para o inglês e a certificação assinada do tradutor, atestando competência e exatidão. Alguns outros órgãos pedem notarização, e podemos providenciá-la sob consulta.",
+  q2: "Vocês são tradutores aprovados pelo USCIS?", a2: "O USCIS não aprova nem certifica tradutores ou empresas de tradução, então ninguém pode afirmar isso com honestidade. O nosso certificado traz as declarações que a regra do USCIS pede.",
+  q3: "Quais idiomas vocês traduzem?", a3: "Português, espanhol e francês para o inglês. Italiano para o inglês sob consulta. Se você precisa de outra direção, como do inglês para o português, fale conosco antes de fazer o pedido.",
+  q4: "Vocês fazem tradução juramentada para o Brasil, a Itália, a França ou a Espanha?", a4: "Por enquanto não. Uma tradução certificada para um processo nos EUA é diferente de uma tradução juramentada feita por um tradutor nomeado em outro país. Se você precisa de uma, avise e diremos antes do pedido se podemos ajudar.",
+  q5: "Posso enviar fotos do celular?", a5: "Sim, se todas as bordas, carimbos e anotações manuscritas estiverem legíveis. Inclua o verso de qualquer documento que tenha escrita. Avisamos antes do pagamento se algo precisar de uma digitalização melhor.",
+  q6: "Como vocês tratam os meus arquivos?", a6: "Passaportes e certidões são dados sensíveis. Os envios trafegam por conexão criptografada, são usados somente para preparar a sua tradução e são apagados em um prazo fixo, que informamos no pagamento.",
+  q7: "Vocês dão orientação de imigração?", a7: "Não. A Attesta Translation traduz documentos. Não é um escritório de advocacia e não pode dizer quais documentos o seu caso exige. Consulte o seu advogado ou representante credenciado.",
+  end_h: "Envie seus documentos e veja o preço", end_mail: "Dúvidas antes de pedir? Escreva para", wa_cta: "Fale conosco no WhatsApp", wa_text: "Olá, tenho uma dúvida sobre uma tradução certificada.",
+  foot_disc: "A Attesta Translation presta serviço de tradução de documentos. Não é um escritório de advocacia e não oferece orientação jurídica ou de imigração.",
+  langBtn: "EN", langAria: "English",
+  optStd: function (d) { return "Padrão, " + d + " dias úteis"; },
+  optRush: function (r) { return "Urgente, 24 horas (+" + r + " por página)"; },
+  pagesLbl: function (n, r) { return n + (n === 1 ? " página" : " páginas") + " a " + r; },
+  fewer: "Menos páginas", more: "Mais páginas", remove: "Remover arquivo", mirrorAria: "Comparar original e tradução",
+  prevBody: function (n, total, f) { return "O seu preço para " + n + (n === 1 ? " página" : " páginas") + " é " + total + ". Confirmamos o número de páginas e enviamos um link de pagamento seguro antes de começar. Os arquivos adicionados aqui não são enviados; anexe-os ao seu e-mail ou mensagem."; }
+}
+};
+
+/* ---- State and helpers -------------------------------------------------------------------------- */
+var state = { lang: "en", pages: 1, pagesTouched: false, files: [] };
+var $ = function (id) { return document.getElementById(id); };
+
+function money(n) {
+  var loc = state.lang === "pt" ? "pt-BR" : "en-US";
+  return new Intl.NumberFormat(loc, { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(n);
+}
+function rateFor(p) { return p >= CONFIG.volumeFrom ? CONFIG.volumeRatePerPage : CONFIG.ratePerPage; }
+function quote(p, rush) {
+  var rate = rateFor(p), base = p * rate, extra = rush ? p * CONFIG.rushPerPage : 0;
+  return { rate: rate, base: base, extra: extra, total: base + extra };
+}
+function size(b) { return b < 1048576 ? Math.max(1, Math.round(b / 1024)) + " KB" : (b / 1048576).toFixed(1) + " MB"; }
+function rushOn() { return document.querySelector('input[name="speed"]:checked').value === "rush"; }
+
+/* ---- Rendering ---------------------------------------------------------------------------------- */
+function applyCopy() {
+  var d = T[state.lang];
+  document.documentElement.lang = state.lang === "pt" ? "pt-BR" : "en";
+  document.querySelectorAll("[data-i18n]").forEach(function (el) { var k = el.getAttribute("data-i18n"); if (d[k] !== undefined) el.textContent = d[k]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+    var k = el.getAttribute("data-i18n-html");
+    el.innerHTML = d[k].replace("{a}", money(3 * CONFIG.ratePerPage)).replace("{b}", money(12 * CONFIG.volumeRatePerPage));
+  });
+  var b = $("langBtn"); b.textContent = d.langBtn; b.setAttribute("aria-label", d.langAria);
+  $("waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(d.wa_text);
+  $("minus").setAttribute("aria-label", d.fewer); $("plus").setAttribute("aria-label", d.more);
+  $("mirrorRange").setAttribute("aria-label", d.mirrorAria);
+  $("optStd").textContent = d.optStd(CONFIG.standardDays);
+  $("optRush").textContent = d.optRush(money(CONFIG.rushPerPage));
+  $("r1a").textContent = money(CONFIG.ratePerPage) + " " + d.per;
+  $("r2a").textContent = money(CONFIG.volumeRatePerPage) + " " + d.per;
+  $("r3a").textContent = "+" + money(CONFIG.rushPerPage) + " " + d.per;
+  renderFiles(); renderTotals();
+}
+function renderTotals() {
+  var d = T[state.lang], q = quote(state.pages, rushOn());
+  $("tPagesLbl").textContent = d.pagesLbl(state.pages, money(q.rate));
+  $("tPages").textContent = money(q.base);
+  $("tRushRow").hidden = !rushOn();
+  $("tRush").textContent = money(q.extra);
+  $("tTotal").textContent = money(q.total);
+  $("pages").value = state.pages;
+  if (!$("previewNote").hidden) $("prevBody").textContent = d.prevBody(state.pages, money(q.total), state.files.length);
+  if (!$("previewNote").hidden) setOrderLinks(q);
+}
+function renderFiles() {
+  var d = T[state.lang], ul = $("fileList");
+  ul.textContent = "";
+  state.files.forEach(function (f, i) {
+    var li = document.createElement("li"), n = document.createElement("span"), s = document.createElement("em"), x = document.createElement("button");
+    n.textContent = f.name; s.textContent = size(f.size);
+    x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", d.remove + ": " + f.name);
+    x.addEventListener("click", function () { state.files.splice(i, 1); if (!state.pagesTouched) state.pages = Math.max(1, state.files.length); renderFiles(); renderTotals(); });
+    li.appendChild(n); li.appendChild(s); li.appendChild(x); ul.appendChild(li);
+  });
+}
+function addFiles(list) {
+  Array.prototype.forEach.call(list, function (f) {
+    if (!state.files.some(function (g) { return g.name === f.name && g.size === f.size; })) state.files.push(f);
+  });
+  if (!state.pagesTouched) state.pages = Math.min(CONFIG.maxPages, Math.max(1, state.files.length));
+  renderFiles(); renderTotals();
+}
+function setPages(v) {
+  var n = parseInt(v, 10);
+  if (isNaN(n)) n = 1;
+  state.pages = Math.min(CONFIG.maxPages, Math.max(1, n)); state.pagesTouched = true; renderTotals();
+}
+
+/* ---- Wiring ------------------------------------------------------------------------------------- */
+$("minus").addEventListener("click", function () { setPages(state.pages - 1); });
+$("plus").addEventListener("click", function () { setPages(state.pages + 1); });
+$("pages").addEventListener("input", function (e) { if (e.target.value !== "") setPages(e.target.value); });
+$("pages").addEventListener("blur", function () { $("pages").value = state.pages; });
+document.querySelectorAll('input[name="speed"]').forEach(function (r) { r.addEventListener("change", renderTotals); });
+$("fileIn").addEventListener("change", function (e) { addFiles(e.target.files); e.target.value = ""; });
+var drop = $("drop");
+["dragenter", "dragover"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); }); });
+["dragleave", "drop"].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); }); });
+drop.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+function setOrderLinks(q) {
+  var d = T[state.lang], sel = $("docLang"), lang = sel.options[sel.selectedIndex].text.replace(/\s*\(.*\)/, "");
+  var speed = rushOn() ? d.t_rush : d.optStd(CONFIG.standardDays);
+  var body = d.mail_body(lang, state.pages, speed, money(q.total));
+  $("pvMail").href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent(d.mail_subj) + "&body=" + encodeURIComponent(body);
+  $("pvWa").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(body.replace(/\n+/g, " ").trim());
+}
+$("quote").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var q = quote(state.pages, rushOn());
+  $("previewNote").hidden = false;
+  $("prevBody").textContent = T[state.lang].prevBody(state.pages, money(q.total), state.files.length);
+  setOrderLinks(q);
+});
+$("langBtn").addEventListener("click", function () {
+  state.lang = state.lang === "en" ? "pt" : "en";
+  try { localStorage.setItem("attesta-lang", state.lang); } catch (err) {}
+  applyCopy();
+});
+
+/* Comparison slider */
+var mirror = $("mirror2"), range = $("mirrorRange"), dragging = false;
+function setPos(pct) {
+  pct = Math.min(100, Math.max(0, pct));
+  mirror.style.setProperty("--pos", pct + "%");
+  range.value = pct;
+}
+function posFromEvent(e) { var r = mirror.getBoundingClientRect(); return ((e.clientX - r.left) / r.width) * 100; }
+mirror.addEventListener("pointerdown", function (e) { dragging = true; try { mirror.setPointerCapture(e.pointerId); } catch (err) {} setPos(posFromEvent(e)); });
+mirror.addEventListener("pointermove", function (e) { if (dragging) setPos(posFromEvent(e)); });
+["pointerup", "pointercancel"].forEach(function (ev) { mirror.addEventListener(ev, function () { dragging = false; }); });
+range.addEventListener("input", function () { setPos(parseFloat(range.value)); });
+
+/* Start */
+(function init() {
+  var saved = null;
+  try { saved = localStorage.getItem("attesta-lang"); } catch (err) {}
+  if (saved === "pt" || saved === "en") state.lang = saved;
+  else if ((navigator.language || "").toLowerCase().indexOf("pt") === 0) state.lang = "pt";
+  var mail = CONFIG.email;
+  document.querySelectorAll('a[href^="mailto:"]').forEach(function (a) { a.href = a.href.replace("hello@attestatranslation.com", mail); if (a.textContent.indexOf("@") > -1) a.textContent = mail; });
+  applyCopy();
+})();
+</script>
+</body>
+</html>

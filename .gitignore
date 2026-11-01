@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+.vercel/
+__pycache__/
+*.pdf.blocks.json
+# Never commit client documents or finished translation packages
+orders/
+client-files/
