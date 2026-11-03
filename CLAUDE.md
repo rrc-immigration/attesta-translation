@@ -4,7 +4,7 @@ Certified translations of PT/ES/FR/IT documents into English for USCIS filings. 
 This is a separate business from Rocha Ricomini Consulting and Migrei.ai. Never put those names, letterhead or seals on Attesta materials.
 
 ## Layout
-- `public/index.html`: the whole site (single self-contained page, EN and PT-BR, live price estimator). Vercel serves `public/`.
+- `public/index.html`: the whole site (single self-contained page, EN, ES and PT-BR with a three-way switch and `?lang=` links, live price estimator). Vercel serves `public/`.
 - `public/attesta-gold-seal*.{svg,png}`, `public/sample-certificate.pdf`: brand assets.
 - `tools/certificate/attesta_cert.py`: Certificate of Translation Accuracy generator.
 - `tools/seal/make_seal.py`: regenerates the gold seal PNG.
@@ -37,9 +37,9 @@ Static site. "Start my order" shows the price and opens a prefilled email or Wha
 - Does $12.50 apply to all pages once over 10, or only pages beyond the 10th?
 - Rush surcharge, turnaround promises, 250-word page definition, free-redo guarantee wording.
 - File retention is set to 30 days after delivery (order records 3 years). This is a default Sergio has not confirmed; if it changes, update the FAQ (`a6`), `privacy.html` and `docs/retention-checklist.md` together.
-- Terms/Privacy need attorney review, the legal entity name that operates Attesta, and Portuguese versions (the footer says "em inglês").
+- Terms/Privacy need attorney review, the legal entity name that operates Attesta, and Portuguese and Spanish versions (the footers say "em inglês" / "en inglés").
 - Stripe account, Zelle enrollment (which bank account, which enrolled email), and whether the Zelle logo may be used.
-- Spanish exists only on the landing page; the main site and Terms/Privacy are EN/PT (Terms/Privacy EN only).
+- Spanish now exists on the main site and the landing page; Terms/Privacy are English only. The Spanish copy is machine-drafted in neutral US Spanish (usted) and should be read by a Spanish speaker before ads run (Sergio signs ES translations).
 - Italian signer; English into PT/ES/FR/IT direction.
 - E&O insurance, trademark clearance for "Attesta".
 - Conflict check with Sergio's employment at Kilpatrick Townsend; clearing marketing wording with Edmund Kim, Esq. if associated with the consulting business.

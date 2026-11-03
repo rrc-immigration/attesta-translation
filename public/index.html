@@ -63,10 +63,14 @@ a { color: inherit; }
 .nav { display: flex; gap: 26px; font-size: 0.95rem; }
 .nav a { text-decoration: none; color: var(--ink-soft); padding: 6px 0; }
 .nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 5px; }
-.lang { font: inherit; font-size: 0.9rem; font-weight: 600; border: 1px solid var(--rule); background: transparent; color: var(--ink); border-radius: 6px; padding: 8px 12px; cursor: pointer; min-height: 40px; }
-.lang:hover { border-color: var(--ink); }
+.langs { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.langs button { font: inherit; font-size: 0.9rem; font-weight: 600; background: transparent; border: 0; color: var(--ink); padding: 8px 10px; min-width: 40px; min-height: 40px; cursor: pointer; }
+.langs button + button { border-left: 1px solid var(--rule); }
+.langs button:hover { background: var(--paper-deep); }
+.langs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 @media (max-width: 860px) { .nav { display: none; } }
-@media (max-width: 520px) { .top .btn { display: none; } .top .wrap { gap: 12px; } .brand b, .brand span { font-size: 1.4rem; } }
+@media (max-width: 520px) { .top .btn { display: none; } .top .wrap { gap: 12px; } .brand b, .brand span { font-size: 1.4rem; } .langs button { padding: 8px 7px; min-width: 36px; } }
+@media (max-width: 380px) { .brand span { display: none; } }
 
 /* Buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; border-radius: 8px; padding: 13px 20px; min-height: 48px; border: 1.5px solid var(--seal); background: var(--seal); color: #fff; transition: background .15s; }
@@ -351,7 +355,7 @@ select:hover, .num input:hover { border-color: var(--ink-soft); }
       <a href="#partners" data-i18n="nav_partners">For attorneys</a>
       <a href="#faq" data-i18n="nav_faq">FAQ</a>
     </nav>
-    <button class="lang" id="langBtn" type="button" aria-label="Português">PT</button>
+    <div class="langs" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en" lang="en">EN</button><button type="button" data-lang="es" lang="es">ES</button><button type="button" data-lang="pt" lang="pt">PT</button></div>
     <a class="btn small" href="#quote" data-i18n="cta_price">Get a price</a>
   </div>
 </header>
@@ -716,12 +720,76 @@ en: {
   q8: "How can I pay?", a8: "We accept cards, through a secure payment link, and Zelle. Once we confirm your final price, we send the instructions. Zelle payments cannot be reversed, so check the recipient name before you send.",
   foot_terms: "Terms of Service", foot_privacy: "Privacy Policy",
   foot_disc: "Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.",
-  langBtn: "PT", langAria: "Português",
   optStd: function (d) { return "Standard, " + d + " business days"; },
   optRush: function (r) { return "Rush, 24 hours (+" + r + " per page)"; },
   pagesLbl: function (n, r) { return n + (n === 1 ? " page" : " pages") + " at " + r; },
   fewer: "Fewer pages", more: "More pages", remove: "Remove file", mirrorAria: "Compare original and translation",
   prevBody: function (n, total, f) { return "Your price for " + n + (n === 1 ? " page" : " pages") + " is " + total + ". We confirm the page count, then send payment instructions (a secure card link or Zelle) before we start. Files you add here are not uploaded; attach them to your email or message."; }
+},
+es: {
+  skip: "Ir a la estimación de precio", nav_how: "Cómo funciona", nav_docs: "Documentos", nav_price: "Precios", nav_partners: "Para abogados", nav_faq: "Preguntas",
+  cta_price: "Ver precio", cta_price2: "Ver precio",
+  h1: "Traducciones certificadas para su trámite ante USCIS",
+  lede: "Del portugués, español, francés e italiano al inglés, con un Certificado de Exactitud de la Traducción firmado en cada documento. Se entrega en PDF.",
+  fact1: "US$ 15 por página. US$ 12.50 por página cuando el pedido supera las 10 páginas.",
+  fact2: "La traducción reproduce el diseño de su original.",
+  fact3: "La rehacemos sin costo si la traducción causa un rechazo o un RFE.",
+  tool_title: "Vea su precio", lbl_lang: "Idioma de su documento",
+  opt_pt: "Portugués", opt_es: "Español", opt_fr: "Francés", opt_it: "Italiano (se confirma antes de pagar)", into: "Traducción al inglés",
+  lbl_files: "Sus documentos", drop_main: "Suelte los archivos aquí o elija archivos",
+  drop_hint: "PDF, JPG, PNG o HEIC. Las fotos del celular sirven si todos los bordes y sellos se leen bien.",
+  lbl_pages: "Páginas", pages_hint: "Una página tiene hasta 250 palabras. Confirmamos el número de páginas antes de que usted pague.",
+  lbl_speed: "Plazo", t_rush: "Urgente, 24 horas", t_total: "Total",
+  notary_note: "La notarización y una copia impresa por correo están disponibles a pedido. USCIS no exige notarización.",
+  start: "Iniciar mi pedido", prev_title: "Casi listo. Envíenos sus documentos para comenzar.", pv_mail: "Enviar documentos por correo", pv_wa: "Enviar por WhatsApp", mail_subj: "Pedido de traducción", mail_body: function (lang, n, speed, total) { return "Hola,\n\nQuisiera una traducción certificada.\n\nIdioma: " + lang + " al inglés\nPáginas: " + n + "\nPlazo: " + speed + "\nTotal estimado: " + total + "\n\nAdjunto mis documentos.\n"; },
+  mirror_h: "La traducción se ve igual que su documento",
+  mirror_p: "Mismos campos, mismo orden, misma estructura de página. Los sellos, firmas y estampillas que no se pueden traducir se describen entre corchetes, para que un revisor pueda comparar ambos lado a lado.",
+  tag_orig: "Original, portugués", tag_trans: "Traducción al inglés",
+  mirror_cap: "Arrastre para comparar el original y la traducción al inglés. Documento de ejemplo con datos ficticios.",
+  how_h: "Cómo funciona",
+  s1_h: "Suba sus documentos", s1_p: "Agregue escaneos o fotos del celular y elija el idioma. Ve el precio de inmediato.",
+  s2_h: "Revisamos sus archivos", s2_p: "Confirmamos el número de páginas y le avisamos antes del pago si alguna página está cortada, borrosa o sin su reverso.",
+  s3_h: "Traducimos y firmamos", s3_p: "Cada documento se traduce completo y se firma con un Certificado de Exactitud de la Traducción.",
+  s4_h: "Recibe un PDF", s4_p: "Descargue la traducción, el certificado y su original en un solo archivo, listo para adjuntar a su trámite.",
+  rule_h: "Lo que pide USCIS",
+  rule_p1: "Un documento en otro idioma necesita una traducción completa al inglés y una declaración del traductor de que es competente en ambos idiomas y de que la traducción es exacta (8 CFR 103.2(b)(3)). Esa declaración es el certificado que ve aquí.",
+  rule_p2: "La notarización no forma parte de esa regla. USCIS tampoco aprueba ni mantiene una lista de traductores o empresas de traducción.",
+  cert_cap: "Certificado de ejemplo con datos de relleno. Cada certificado real lleva el nombre y la firma del traductor.",
+  docs_h: "Documentos que traducimos",
+  d1_h: "Acta o certificado de nacimiento", d1_p: "Forma completa y abreviada, con notas marginales y el reverso.",
+  d2_h: "Acta o certificado de matrimonio", d2_p: "Incluidas anotaciones como un divorcio o un cambio de nombre.",
+  d3_h: "Antecedentes penales", d3_p: "Certificados de antecedentes y registros de tribunales o de la policía.",
+  d4_h: "Diploma y expediente académico", d4_p: "Títulos, listas de materias y calificaciones, con todos los sellos y notas.",
+  d5_h: "Estado de cuenta bancario", d5_p: "Cada línea traducida, con los montos en la moneda original.",
+  d6_h: "Sentencia de divorcio", d6_p: "Sentencias judiciales y los certificados que las registran.",
+  docs_more: "¿Otro documento? Envíelo y recibe el precio antes de pagar.",
+  price_h: "Precios", price_ex: "Un pedido de 3 páginas cuesta <strong>{a}</strong>. Un pedido de 12 páginas cuesta <strong>{b}</strong>.",
+  price_page: "Una página tiene hasta 250 palabras. Las páginas densas, las tablas y el texto manuscrito se confirman antes del pago.",
+  price_it: "El italiano se confirma antes del pago.",
+  r1: "De 1 a 10 páginas", r2: "Más de 10 páginas", r2s: "La tarifa menor se aplica a todo el pedido.", r3: "Urgente, 24 horas", r3s: "Se suma a cada página.",
+  r4: "Notarización", r5: "Copia impresa por correo", onreq: "A pedido", onreq2: "A pedido", per: "/ página",
+  guar_h: "Si la traducción causa un problema, la rehacemos",
+  guar_p: "Si USCIS rechaza una solicitud o emite una solicitud de evidencia (RFE) por causa de nuestra traducción, la corregimos y emitimos de nuevo el certificado sin costo. No podemos prometer el resultado de su caso. Esa decisión le corresponde a USCIS.",
+  part_h: "Para abogados, paralegales y consultores",
+  part_p: "Envíe documentos en lote y reciba una sola factura. Hay tarifas para socios por volumen recurrente. Los certificados se pueden adjuntar a sus anexos tal como están.",
+  part_cta: "Consultar tarifas para socios",
+  faq_h: "Preguntas",
+  q1: "¿USCIS exige una traducción notarizada?", a1: "No. USCIS pide una traducción completa al inglés y la certificación firmada del traductor, que atestigua su competencia y la exactitud. Otras oficinas piden notarización, y podemos gestionarla a pedido.",
+  q2: "¿Son traductores aprobados por USCIS?", a2: "USCIS no aprueba ni certifica a traductores ni a empresas de traducción, así que nadie puede afirmarlo con honestidad. Nuestro certificado contiene las declaraciones que pide la regla de USCIS.",
+  q3: "¿Qué idiomas traducen?", a3: "Portugués, español y francés al inglés. Italiano al inglés a pedido. Si necesita otra dirección, como del inglés al español, consúltenos antes de hacer el pedido.",
+  q4: "¿Hacen traducciones juradas para Brasil, Italia, Francia o España?", a4: "Por ahora no. Una traducción certificada para un trámite en EE. UU. es distinta de una traducción jurada hecha por un traductor nombrado en otro país. Si necesita una, avísenos y le diremos antes del pedido si podemos ayudar.",
+  q5: "¿Puedo enviar fotos desde el celular?", a5: "Sí, si todos los bordes, sellos y notas escritas a mano se leen bien. Incluya el reverso de cualquier documento que tenga escritura. Le avisamos antes del pago si algo necesita un mejor escaneo.",
+  q6: "¿Cómo manejan mis archivos?", a6: "Los pasaportes y las actas son datos sensibles. Usamos sus documentos solo para preparar la traducción y los borramos dentro de los 30 días posteriores a la entrega. Puede pedir que se borren antes. Vea nuestra Política de Privacidad más abajo (en inglés).",
+  q7: "¿Ofrecen asesoría de inmigración?", a7: "No. Attesta Translation traduce documentos. No es un bufete de abogados y no puede decirle qué documentos exige su caso. Consulte a su abogado o representante acreditado.",
+  end_h: "Envíe sus documentos y vea su precio", end_mail: "¿Preguntas antes de pedir? Escriba a", wa_cta: "Escríbanos por WhatsApp", wa_text: "Hola, tengo una pregunta sobre una traducción certificada.",
+  q8: "¿Cómo puedo pagar?", a8: "Aceptamos tarjeta, mediante un enlace de pago seguro, y Zelle. Cuando confirmamos el precio final, le enviamos las instrucciones. Los pagos por Zelle no se pueden revertir, así que verifique el nombre del destinatario antes de enviar.",
+  foot_terms: "Términos de Servicio (en inglés)", foot_privacy: "Política de Privacidad (en inglés)",
+  foot_disc: "Attesta Translation presta servicios de traducción de documentos. No es un bufete de abogados y no ofrece asesoría legal ni de inmigración.",
+  optStd: function (d) { return "Estándar, " + d + " días hábiles"; },
+  optRush: function (r) { return "Urgente, 24 horas (+" + r + " por página)"; },
+  pagesLbl: function (n, r) { return n + (n === 1 ? " página" : " páginas") + " a " + r; },
+  fewer: "Menos páginas", more: "Más páginas", remove: "Quitar archivo", mirrorAria: "Comparar original y traducción",
+  prevBody: function (n, total, f) { return "Su precio por " + n + (n === 1 ? " página" : " páginas") + " es " + total + ". Confirmamos el número de páginas y le enviamos las instrucciones de pago (enlace seguro para tarjeta o Zelle) antes de comenzar. Los archivos que agregue aquí no se suben; adjúntelos a su correo o mensaje."; }
 },
 pt: {
   skip: "Ir para a estimativa de preço", nav_how: "Como funciona", nav_docs: "Documentos", nav_price: "Preços", nav_partners: "Para advogados", nav_faq: "Dúvidas",
@@ -782,7 +850,6 @@ pt: {
   q8: "Como posso pagar?", a8: "Aceitamos cartão, por um link de pagamento seguro, e Zelle. Depois que confirmamos o preço final, enviamos as instruções. Pagamentos por Zelle não podem ser desfeitos, então confira o nome do destinatário antes de enviar.",
   foot_terms: "Termos de Serviço (em inglês)", foot_privacy: "Política de Privacidade (em inglês)",
   foot_disc: "A Attesta Translation presta serviço de tradução de documentos. Não é um escritório de advocacia e não oferece orientação jurídica ou de imigração.",
-  langBtn: "EN", langAria: "English",
   optStd: function (d) { return "Padrão, " + d + " dias úteis"; },
   optRush: function (r) { return "Urgente, 24 horas (+" + r + " por página)"; },
   pagesLbl: function (n, r) { return n + (n === 1 ? " página" : " páginas") + " a " + r; },
@@ -796,6 +863,7 @@ var state = { lang: "en", pages: 1, pagesTouched: false, files: [] };
 var $ = function (id) { return document.getElementById(id); };
 
 function money(n) {
+  if (state.lang === "es") return "US$ " + n.toLocaleString("es-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   var loc = state.lang === "pt" ? "pt-BR" : "en-US";
   return new Intl.NumberFormat(loc, { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(n);
 }
@@ -810,13 +878,13 @@ function rushOn() { return document.querySelector('input[name="speed"]:checked')
 /* ---- Rendering ---------------------------------------------------------------------------------- */
 function applyCopy() {
   var d = T[state.lang];
-  document.documentElement.lang = state.lang === "pt" ? "pt-BR" : "en";
+  document.documentElement.lang = state.lang === "pt" ? "pt-BR" : state.lang === "es" ? "es-US" : "en";
   document.querySelectorAll("[data-i18n]").forEach(function (el) { var k = el.getAttribute("data-i18n"); if (d[k] !== undefined) el.textContent = d[k]; });
   document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
     var k = el.getAttribute("data-i18n-html");
     el.innerHTML = d[k].replace("{a}", money(3 * CONFIG.ratePerPage)).replace("{b}", money(12 * CONFIG.volumeRatePerPage));
   });
-  var b = $("langBtn"); b.textContent = d.langBtn; b.setAttribute("aria-label", d.langAria);
+  document.querySelectorAll(".langs button").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-lang") === state.lang ? "true" : "false"); });
   $("waBtn").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(d.wa_text);
   $("minus").setAttribute("aria-label", d.fewer); $("plus").setAttribute("aria-label", d.more);
   $("mirrorRange").setAttribute("aria-label", d.mirrorAria);
@@ -887,10 +955,12 @@ $("quote").addEventListener("submit", function (e) {
   $("prevBody").textContent = T[state.lang].prevBody(state.pages, money(q.total), state.files.length);
   setOrderLinks(q);
 });
-$("langBtn").addEventListener("click", function () {
-  state.lang = state.lang === "en" ? "pt" : "en";
-  try { localStorage.setItem("attesta-lang", state.lang); } catch (err) {}
-  applyCopy();
+document.querySelectorAll(".langs button").forEach(function (b) {
+  b.addEventListener("click", function () {
+    state.lang = b.getAttribute("data-lang");
+    try { localStorage.setItem("attesta-lang", state.lang); } catch (err) {}
+    applyCopy();
+  });
 });
 
 /* Comparison slider */
@@ -910,8 +980,12 @@ range.addEventListener("input", function () { setPos(parseFloat(range.value)); }
 (function init() {
   var saved = null;
   try { saved = localStorage.getItem("attesta-lang"); } catch (err) {}
-  if (saved === "pt" || saved === "en") state.lang = saved;
-  else if ((navigator.language || "").toLowerCase().indexOf("pt") === 0) state.lang = "pt";
+  var asked = null;
+  try { asked = new URLSearchParams(location.search).get("lang"); } catch (err) {}
+  function ok(v) { return v === "pt" || v === "es" || v === "en"; }
+  if (ok(asked)) state.lang = asked;
+  else if (ok(saved)) state.lang = saved;
+  else { var nav = (navigator.language || "").toLowerCase(); if (nav.indexOf("pt") === 0) state.lang = "pt"; else if (nav.indexOf("es") === 0) state.lang = "es"; }
   var mail = CONFIG.email;
   document.querySelectorAll('a[href^="mailto:"]').forEach(function (a) { a.href = a.href.replace("hello@attestatranslation.com", mail); if (a.textContent.indexOf("@") > -1) a.textContent = mail; });
   applyCopy();
