@@ -9,6 +9,7 @@ This is a separate business from Rocha Ricomini Consulting and Migrei.ai. Never 
 - `tools/certificate/attesta_cert.py`: Certificate of Translation Accuracy generator.
 - `tools/seal/make_seal.py`: regenerates the gold seal PNG.
 - `tools/translate/mirror_pdf.py`: in-place facsimile translation of a PDF (keeps the original page, replaces the text).
+- `public/lp/index.html`: Facebook ad landing page at /lp (PT default, EN with `?lang=en`; `?src=name` tags the WhatsApp message with the ad source; `noindex`). Its CONFIG duplicates the prices and WhatsApp number from `public/index.html`: change both together. No Meta Pixel installed; if one is added, update `privacy.html` (it says the site has no ad trackers).
 - `public/terms.html`, `public/privacy.html`: Terms of Service and Privacy Policy (English only, linked in the footer; Vercel serves them at /terms and /privacy). Draft, not yet reviewed by an attorney.
 - `docs/retention-checklist.md`: how to keep the 30-day deletion promise.
 - `docs/website-plan.md`: original plan and stack ideas. `docs/attesta-translation-skill.md`: the order workflow skill text.
