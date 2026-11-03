@@ -9,8 +9,9 @@ This is a separate business from Rocha Ricomini Consulting and Migrei.ai. Never 
 - `tools/certificate/attesta_cert.py`: Certificate of Translation Accuracy generator.
 - `tools/seal/make_seal.py`: regenerates the gold seal PNG.
 - `tools/translate/mirror_pdf.py`: in-place facsimile translation of a PDF (keeps the original page, replaces the text).
-- `public/lp/index.html`: Facebook ad landing page at /lp (PT default, EN with `?lang=en`; `?src=name` tags the WhatsApp message with the ad source; `noindex`). Its CONFIG duplicates the prices and WhatsApp number from `public/index.html`: change both together. No Meta Pixel installed; if one is added, update `privacy.html` (it says the site has no ad trackers).
+- `public/lp/index.html`: Facebook ad landing page at /lp (PT default, `?lang=es` Spanish, `?lang=en` English; `?src=name` tags the WhatsApp message with the ad source; `noindex`). Its CONFIG duplicates the prices and WhatsApp number from `public/index.html`: change both together. No Meta Pixel installed; if one is added, update `privacy.html` (it says the site has no ad trackers).
 - `public/terms.html`, `public/privacy.html`: Terms of Service and Privacy Policy (English only, linked in the footer; Vercel serves them at /terms and /privacy). Draft, not yet reviewed by an attorney.
+- `docs/payments-setup.md`: Stripe and Zelle setup steps. The site says clients pay by card link or Zelle but publishes no Zelle recipient or Stripe link.
 - `docs/retention-checklist.md`: how to keep the 30-day deletion promise.
 - `docs/website-plan.md`: original plan and stack ideas. `docs/attesta-translation-skill.md`: the order workflow skill text.
 
@@ -25,7 +26,7 @@ email hello@attestatranslation.com, WhatsApp digits (used only inside the button
 - Do not add copy that promises something the business does not yet do (uploads, checkout). The 30-day deletion promise is real only if `docs/retention-checklist.md` is followed.
 
 ## Current state (launch version)
-Static site. "Start my order" shows the price and opens a prefilled email or WhatsApp message; documents are NOT uploaded through the site. Payment is by a link Sergio sends. There is no backend.
+Static site. "Start my order" shows the price and opens a prefilled email or WhatsApp message; documents are NOT uploaded through the site. Payment is by a Stripe card link or Zelle, with instructions sent after the final price is confirmed (see `docs/payments-setup.md`; the account and Zelle enrollment must exist before ads run). There is no backend.
 
 ## Next phases
 1. Stripe Payment Links, then Stripe Checkout with webhooks.
@@ -37,6 +38,8 @@ Static site. "Start my order" shows the price and opens a prefilled email or Wha
 - Rush surcharge, turnaround promises, 250-word page definition, free-redo guarantee wording.
 - File retention is set to 30 days after delivery (order records 3 years). This is a default Sergio has not confirmed; if it changes, update the FAQ (`a6`), `privacy.html` and `docs/retention-checklist.md` together.
 - Terms/Privacy need attorney review, the legal entity name that operates Attesta, and Portuguese versions (the footer says "em inglês").
+- Stripe account, Zelle enrollment (which bank account, which enrolled email), and whether the Zelle logo may be used.
+- Spanish exists only on the landing page; the main site and Terms/Privacy are EN/PT (Terms/Privacy EN only).
 - Italian signer; English into PT/ES/FR/IT direction.
 - E&O insurance, trademark clearance for "Attesta".
 - Conflict check with Sergio's employment at Kilpatrick Townsend; clearing marketing wording with Edmund Kim, Esq. if associated with the consulting business.

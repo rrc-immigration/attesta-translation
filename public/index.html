@@ -612,6 +612,7 @@ select:hover, .num input:hover { border-color: var(--ink-soft); }
       <details><summary data-i18n="q5">Can I send photos from my phone?</summary><p class="ans" data-i18n="a5">Yes, if every edge, stamp and handwritten note is readable. Include the back of any document that has writing on it. We tell you before you pay if something needs a better scan.</p></details>
       <details><summary data-i18n="q6">How do you handle my files?</summary><p class="ans" data-i18n="a6">Passports and civil records are sensitive. Uploads travel over an encrypted connection, are used only to prepare your translation, and are deleted on a fixed schedule that we state at checkout.</p></details>
       <details><summary data-i18n="q7">Do you give immigration advice?</summary><p class="ans" data-i18n="a7">No. Attesta Translation translates documents. It is not a law firm and can't tell you which documents your case needs. Ask your attorney or accredited representative.</p></details>
+      <details><summary data-i18n="q8">How can I pay?</summary><p class="ans" data-i18n="a8">We accept cards, through a secure payment link, and Zelle. Once we confirm your final price, we send the instructions. Zelle payments cannot be reversed, so check the recipient name before you send.</p></details>
     </div>
   </div>
 </section>
@@ -712,6 +713,7 @@ en: {
   q6: "How do you handle my files?", a6: "Passports and civil records are sensitive. We use your documents only to prepare your translation, and we delete them within 30 days after we deliver it. You can ask us to delete them sooner. See our Privacy Policy below.",
   q7: "Do you give immigration advice?", a7: "No. Attesta Translation translates documents. It is not a law firm and can't tell you which documents your case needs. Ask your attorney or accredited representative.",
   end_h: "Send your documents and see your price", end_mail: "Questions before you order? Write to", wa_cta: "Message us on WhatsApp", wa_text: "Hello, I have a question about a certified translation.",
+  q8: "How can I pay?", a8: "We accept cards, through a secure payment link, and Zelle. Once we confirm your final price, we send the instructions. Zelle payments cannot be reversed, so check the recipient name before you send.",
   foot_terms: "Terms of Service", foot_privacy: "Privacy Policy",
   foot_disc: "Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.",
   langBtn: "PT", langAria: "Português",
@@ -719,7 +721,7 @@ en: {
   optRush: function (r) { return "Rush, 24 hours (+" + r + " per page)"; },
   pagesLbl: function (n, r) { return n + (n === 1 ? " page" : " pages") + " at " + r; },
   fewer: "Fewer pages", more: "More pages", remove: "Remove file", mirrorAria: "Compare original and translation",
-  prevBody: function (n, total, f) { return "Your price for " + n + (n === 1 ? " page" : " pages") + " is " + total + ". We confirm the page count, then send you a secure payment link before we start. Files you add here are not uploaded; attach them to your email or message."; }
+  prevBody: function (n, total, f) { return "Your price for " + n + (n === 1 ? " page" : " pages") + " is " + total + ". We confirm the page count, then send payment instructions (a secure card link or Zelle) before we start. Files you add here are not uploaded; attach them to your email or message."; }
 },
 pt: {
   skip: "Ir para a estimativa de preço", nav_how: "Como funciona", nav_docs: "Documentos", nav_price: "Preços", nav_partners: "Para advogados", nav_faq: "Dúvidas",
@@ -777,6 +779,7 @@ pt: {
   q6: "Como vocês tratam os meus arquivos?", a6: "Passaportes e certidões são dados sensíveis. Usamos os seus documentos somente para preparar a tradução e os apagamos em até 30 dias após a entrega. Você pode pedir que sejam apagados antes. Veja a nossa Política de Privacidade abaixo (em inglês).",
   q7: "Vocês dão orientação de imigração?", a7: "Não. A Attesta Translation traduz documentos. Não é um escritório de advocacia e não pode dizer quais documentos o seu caso exige. Consulte o seu advogado ou representante credenciado.",
   end_h: "Envie seus documentos e veja o preço", end_mail: "Dúvidas antes de pedir? Escreva para", wa_cta: "Fale conosco no WhatsApp", wa_text: "Olá, tenho uma dúvida sobre uma tradução certificada.",
+  q8: "Como posso pagar?", a8: "Aceitamos cartão, por um link de pagamento seguro, e Zelle. Depois que confirmamos o preço final, enviamos as instruções. Pagamentos por Zelle não podem ser desfeitos, então confira o nome do destinatário antes de enviar.",
   foot_terms: "Termos de Serviço (em inglês)", foot_privacy: "Política de Privacidade (em inglês)",
   foot_disc: "A Attesta Translation presta serviço de tradução de documentos. Não é um escritório de advocacia e não oferece orientação jurídica ou de imigração.",
   langBtn: "EN", langAria: "English",
@@ -784,7 +787,7 @@ pt: {
   optRush: function (r) { return "Urgente, 24 horas (+" + r + " por página)"; },
   pagesLbl: function (n, r) { return n + (n === 1 ? " página" : " páginas") + " a " + r; },
   fewer: "Menos páginas", more: "Mais páginas", remove: "Remover arquivo", mirrorAria: "Comparar original e tradução",
-  prevBody: function (n, total, f) { return "O seu preço para " + n + (n === 1 ? " página" : " páginas") + " é " + total + ". Confirmamos o número de páginas e enviamos um link de pagamento seguro antes de começar. Os arquivos adicionados aqui não são enviados; anexe-os ao seu e-mail ou mensagem."; }
+  prevBody: function (n, total, f) { return "O seu preço para " + n + (n === 1 ? " página" : " páginas") + " é " + total + ". Confirmamos o número de páginas e enviamos as instruções de pagamento (link seguro para cartão ou Zelle) antes de começar. Os arquivos adicionados aqui não são enviados; anexe-os ao seu e-mail ou mensagem."; }
 }
 };
 

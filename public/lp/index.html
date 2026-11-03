@@ -27,8 +27,11 @@ h2 { font-size:clamp(1.6rem,3.6vw,2.2rem); }
 .top .wrap { display:flex; align-items:center; justify-content:space-between; min-height:64px; gap:12px; }
 .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-family:var(--display); font-size:1.5rem; }
 .brand img { width:34px; height:34px; } .brand b { font-weight:600; } .brand span { color:var(--ink-soft); }
-.lang { font:inherit; font-weight:600; background:none; border:1.5px solid var(--ink); color:var(--ink); border-radius:8px; padding:6px 12px; min-height:40px; cursor:pointer; }
-.lang:hover { background:var(--ink); color:var(--paper); }
+.langs { display:inline-flex; border:1.5px solid var(--ink); border-radius:8px; overflow:hidden; }
+.langs button { font:inherit; font-weight:600; background:none; border:0; color:var(--ink); padding:6px 12px; min-height:40px; min-width:44px; cursor:pointer; }
+.langs button + button { border-left:1.5px solid var(--ink); }
+.langs button:hover { background:var(--paper-deep); }
+.langs button[aria-pressed="true"] { background:var(--ink); color:var(--paper); }
 
 .btn { display:inline-flex; align-items:center; justify-content:center; font:inherit; font-weight:600; font-size:1.05rem; text-decoration:none; cursor:pointer; border-radius:10px; padding:14px 22px; min-height:52px; border:1.5px solid var(--seal); background:var(--seal); color:#fff; width:100%; }
 .btn:hover { background:var(--seal-deep); border-color:var(--seal-deep); }
@@ -56,6 +59,7 @@ h1 { font-size:clamp(2.3rem,6.2vw,4rem); }
 .total strong { font-family:var(--display); font-size:2.4rem; font-weight:600; line-height:1; }
 .card .btn { margin-top:16px; } .card .btn + .btn { margin-top:10px; }
 .fine { color:var(--ink-soft); font-size:.9rem; margin:12px 0 0; }
+.fine.pay { color:var(--ink); font-weight:600; }
 
 section.band { padding-block:clamp(36px,6vw,72px); border-top:1px solid var(--rule); }
 section.band.deep { background:var(--paper-deep); }
@@ -91,7 +95,7 @@ footer p { max-width:70ch; margin:0 0 8px; } footer a { margin-right:16px; font-
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="/" aria-label="Attesta Translation"><img src="/attesta-gold-seal-small.png" alt=""><b>Attesta</b><span>Translation</span></a>
-  <button class="lang" id="langBtn" type="button" aria-label="English">EN</button>
+  <div class="langs" role="group" aria-label="Language / Idioma"><button type="button" data-lang="pt" lang="pt">PT</button><button type="button" data-lang="es" lang="es">ES</button><button type="button" data-lang="en" lang="en">EN</button></div>
 </div></header>
 
 <main>
@@ -121,6 +125,7 @@ footer p { max-width:70ch; margin:0 0 8px; } footer a { margin-right:16px; font-
     </div>
     <a class="btn" id="waBtn" href="#" target="_blank" rel="noopener" data-i18n="c_wa">Enviar meus documentos no WhatsApp</a>
     <a class="btn ghost" id="mailBtn" href="#" data-i18n="c_mail">Prefiro enviar por e-mail</a>
+    <p class="fine pay" data-i18n="c_pay">Pagamento por cartão ou Zelle.</p>
     <p class="fine" data-i18n="c_fine">Você não paga agora. Primeiro enviamos o preço final e um link de pagamento seguro.</p>
   </div>
 </div></section>
@@ -163,6 +168,7 @@ footer p { max-width:70ch; margin:0 0 8px; } footer a { margin-right:16px; font-
     <details><summary data-i18n="q1">Posso mandar fotos do celular?</summary><p data-i18n="a1">Pode, se todas as bordas, carimbos e anotações estiverem legíveis. Se algo precisar de foto melhor, avisamos antes de você pagar.</p></details>
     <details><summary data-i18n="q2">Quanto custa mais de 10 páginas?</summary><p data-i18n="a2">A partir de 11 páginas o valor é US$ 12,50 por página. Para urgência ou cópia impressa, pergunte e informamos o preço.</p></details>
     <details><summary data-i18n="q3">Quais idiomas vocês traduzem?</summary><p data-i18n="a3">Português, espanhol e francês para inglês. Para outras combinações, pergunte antes de pedir.</p></details>
+    <details><summary data-i18n="q5">Como posso pagar?</summary><p data-i18n="a5">Aceitamos cartão, por um link de pagamento seguro, e Zelle. Depois que confirmamos o preço final, enviamos as instruções. Pagamentos por Zelle não podem ser desfeitos, então confira o nome do destinatário antes de enviar.</p></details>
     <details><summary data-i18n="q4">Meus documentos ficam guardados?</summary><p data-i18n="a4">Usamos seus documentos somente para preparar a tradução e os apagamos em até 30 dias após a entrega. Você pode pedir que sejam apagados antes. Veja a Política de Privacidade (em inglês).</p></details>
   </div>
 </div></section>
@@ -185,17 +191,17 @@ footer p { max-width:70ch; margin:0 0 8px; } footer a { margin-right:16px; font-
 var CONFIG = { email:"hello@attestatranslation.com", whatsapp:"14083558159", rate:15, volumeRate:12.5, volumeFrom:11, maxPages:200, source:"Facebook" };
 var T = {
 pt: {
- title:"Tradução certificada para o USCIS | Attesta Translation", langBtn:"EN", langAria:"English", locale:"pt-BR", cur:"US$ ",
+ title:"Tradução certificada para o USCIS | Attesta Translation", locale:"pt-BR", cur:"US$ ",
  h1:"Tradução certificada para o USCIS",
  lede:"Português, espanhol e francês para inglês. A tradução fica com o mesmo layout do documento original e vem com o Certificado de Tradução assinado. Você recebe um PDF por e-mail.",
  p1:"US$ 15 por página, sem taxa escondida", p2:"Prazo padrão de cerca de 2 dias úteis", p3:"Se a tradução causar um problema, nós refazemos",
  c_h:"Veja o seu preço", c_sub:"Uma página tem até 250 palavras. Confirmamos o número de páginas antes de você pagar.", c_lbl:"Quantas páginas?",
- c_wa:"Enviar meus documentos no WhatsApp", c_mail:"Prefiro enviar por e-mail", c_fine:"Você não paga agora. Primeiro enviamos o preço final e um link de pagamento seguro.",
+ c_wa:"Enviar meus documentos no WhatsApp", c_mail:"Prefiro enviar por e-mail", c_pay:"Pagamento por cartão ou Zelle.", c_fine:"Você não paga agora. Primeiro enviamos o preço final e as instruções de pagamento.",
  g_h:"O que você recebe", g1h:"Tradução igual ao original", g1p:"Mesmos campos, mesma ordem, mesma estrutura de página. Carimbos, assinaturas e códigos que não podem ser traduzidos aparecem descritos entre colchetes.",
  g2h:"Certificado assinado", g2p:"O Certificado de Tradução traz as declarações que a regra do USCIS pede: o tradutor domina os dois idiomas e a tradução é completa e correta.",
  g3h:"PDF pronto para enviar", g3p:"Tradução, certificado e cópia do original num único arquivo, por e-mail.",
  h_h:"Como funciona", s1b:"Envie seus documentos", s1s:"Fotos nítidas ou PDF, pelo WhatsApp ou por e-mail. Inclua o verso se tiver algo escrito.",
- s2b:"Confirmamos o preço", s2s:"Contamos as páginas, confirmamos o valor e enviamos o link de pagamento.", s3b:"Você recebe o PDF", s3s:"Tradução com certificado assinado, pronta para anexar ao seu processo.",
+ s2b:"Confirmamos o preço", s2s:"Contamos as páginas, confirmamos o valor e enviamos as instruções de pagamento.", s3b:"Você recebe o PDF", s3s:"Tradução com certificado assinado, pronta para anexar ao seu processo.",
  o_h:"O que o USCIS exige, sem enrolação",
  o_p1:"O USCIS pede uma tradução completa para o inglês, com a certificação assinada do tradutor de que ele é competente nos dois idiomas e de que a tradução é exata. É isso que entregamos. Não é preciso reconhecer firma em cartório.",
  o_p2:"O USCIS não aprova nem credencia tradutores ou empresas de tradução, então ninguém pode dizer que é “aprovado pelo USCIS”. Tradução certificada para os EUA também não é tradução juramentada. A Attesta Translation não é um escritório de advocacia e não dá orientação de imigração.",
@@ -203,6 +209,7 @@ pt: {
  f_h:"Perguntas", q1:"Posso mandar fotos do celular?", a1:"Pode, se todas as bordas, carimbos e anotações estiverem legíveis. Se algo precisar de foto melhor, avisamos antes de você pagar.",
  q2:"Quanto custa mais de 10 páginas?", a2:"A partir de 11 páginas o valor é US$ 12,50 por página. Para urgência ou cópia impressa, pergunte e informamos o preço.",
  q3:"Quais idiomas vocês traduzem?", a3:"Português, espanhol e francês para inglês. Para outras combinações, pergunte antes de pedir.",
+ q5:"Como posso pagar?", a5:"Aceitamos cartão, por um link de pagamento seguro, e Zelle. Depois que confirmamos o preço final, enviamos as instruções. Pagamentos por Zelle não podem ser desfeitos, então confira o nome do destinatário antes de enviar.",
  q4:"Meus documentos ficam guardados?", a4:"Usamos seus documentos somente para preparar a tradução e os apagamos em até 30 dias após a entrega. Você pode pedir que sejam apagados antes. Veja a Política de Privacidade (em inglês).",
  e_h:"Envie seus documentos e receba o preço final", ft:"Termos de Serviço (em inglês)", fp:"Política de Privacidade (em inglês)", fh:"Site completo",
  fd:"A Attesta Translation presta serviço de tradução de documentos. Não é um escritório de advocacia e não oferece orientação jurídica ou de imigração.",
@@ -211,18 +218,46 @@ pt: {
  msg:function(n,t,src){return "Olá! Quero uma tradução certificada para o USCIS. Páginas: "+n+". Total estimado: "+t+". Vou enviar os documentos aqui. ("+src+")";},
  subj:"Pedido de tradução", mailBody:function(n,t){return "Olá,\n\nGostaria de uma tradução certificada.\n\nPáginas: "+n+"\nTotal estimado: "+t+"\n\nSeguem meus documentos em anexo.\n";}
 },
+es: {
+ title:"Traducción certificada para USCIS | Attesta Translation", locale:"es-US", cur:"US$ ",
+ h1:"Traducción certificada para USCIS",
+ lede:"Portugués, español y francés al inglés. La traducción conserva el mismo diseño del documento original y viene con el Certificado de Traducción firmado. Recibe un PDF por correo electrónico.",
+ p1:"US$ 15 por página, sin cargos ocultos", p2:"Plazo estándar de aproximadamente 2 días hábiles", p3:"Si la traducción causa un problema, la rehacemos",
+ c_h:"Vea su precio", c_sub:"Una página tiene hasta 250 palabras. Confirmamos el número de páginas antes de que usted pague.", c_lbl:"¿Cuántas páginas?",
+ c_wa:"Enviar mis documentos por WhatsApp", c_mail:"Prefiero enviarlos por correo electrónico", c_pay:"Pago con tarjeta o Zelle.", c_fine:"No paga ahora. Primero le enviamos el precio final y las instrucciones de pago.",
+ g_h:"Lo que recibe", g1h:"Una traducción igual al original", g1p:"Mismos campos, mismo orden, misma estructura de página. Los sellos, firmas y códigos que no se pueden traducir se describen entre corchetes.",
+ g2h:"Certificado firmado", g2p:"El Certificado de Traducción incluye las declaraciones que pide la regla de USCIS: el traductor domina ambos idiomas y la traducción es completa y exacta.",
+ g3h:"PDF listo para presentar", g3p:"Traducción, certificado y copia del original en un solo archivo, por correo electrónico.",
+ h_h:"Cómo funciona", s1b:"Envíe sus documentos", s1s:"Fotos nítidas o PDF, por WhatsApp o por correo electrónico. Incluya el reverso si tiene algo escrito.",
+ s2b:"Confirmamos el precio", s2s:"Contamos las páginas, confirmamos el total y le enviamos las instrucciones de pago.", s3b:"Recibe el PDF", s3s:"La traducción con certificado firmado, lista para adjuntar a su trámite.",
+ o_h:"Lo que exige USCIS, sin rodeos",
+ o_p1:"USCIS pide una traducción completa al inglés, con la certificación firmada del traductor de que es competente en ambos idiomas y de que la traducción es exacta. Eso es lo que entregamos. No se exige notarización.",
+ o_p2:"USCIS no aprueba ni certifica a traductores ni a empresas de traducción, así que nadie puede decir con honestidad que está “aprobado por USCIS”. Una traducción certificada para un trámite en EE. UU. tampoco es una traducción jurada. Attesta Translation no es un bufete de abogados y no ofrece asesoría de inmigración.",
+ gh:"Si la traducción causa un problema, la rehacemos", gp:"Si USCIS rechaza una solicitud o emite una solicitud de evidencia (RFE) por causa de nuestra traducción, la corregimos y emitimos de nuevo el certificado sin costo. No podemos prometer el resultado de su caso. Esa decisión le corresponde a USCIS.",
+ f_h:"Preguntas", q1:"¿Puedo enviar fotos desde el celular?", a1:"Sí, si todos los bordes, sellos y notas escritas a mano se leen bien. Si algo necesita una mejor foto, se lo decimos antes de que pague.",
+ q2:"¿Cuánto cuesta si son más de 10 páginas?", a2:"Desde 11 páginas el precio es US$ 12.50 por página. Para servicio urgente o copia impresa, pregúntenos y le damos el precio.",
+ q3:"¿Qué idiomas traducen?", a3:"Portugués, español y francés al inglés. Para otras combinaciones, pregunte antes de pedir.",
+ q5:"¿Cómo puedo pagar?", a5:"Aceptamos tarjeta, mediante un enlace de pago seguro, y Zelle. Cuando confirmamos el precio final, le enviamos las instrucciones. Los pagos por Zelle no se pueden revertir, así que verifique el nombre del destinatario antes de enviar.",
+ q4:"¿Guardan mis documentos?", a4:"Usamos sus documentos solo para preparar la traducción y los borramos dentro de los 30 días posteriores a la entrega. Puede pedir que se borren antes. Vea la Política de Privacidad (en inglés).",
+ e_h:"Envíe sus documentos y reciba el precio final", ft:"Términos de Servicio (en inglés)", fp:"Política de Privacidad (en inglés)", fh:"Sitio completo",
+ fd:"Attesta Translation presta servicios de traducción de documentos. No es un bufete de abogados y no ofrece asesoría legal ni de inmigración.",
+ minus:"Menos páginas", plus:"Más páginas",
+ rateLbl:function(n,r){return n+(n===1?" página":" páginas")+" a "+r;}, rateNote:function(n){return n>=11?"El precio de más de 10 páginas aplica a todo el pedido":"";},
+ msg:function(n,t,src){return "¡Hola! Quiero una traducción certificada para USCIS. Páginas: "+n+". Total estimado: "+t+". Enviaré los documentos por aquí. ("+src+")";},
+ subj:"Pedido de traducción", mailBody:function(n,t){return "Hola,\n\nQuisiera una traducción certificada.\n\nPáginas: "+n+"\nTotal estimado: "+t+"\n\nAdjunto mis documentos.\n";}
+},
 en: {
- title:"Certified translation for USCIS | Attesta Translation", langBtn:"PT", langAria:"Português", locale:"en-US", cur:"$",
+ title:"Certified translation for USCIS | Attesta Translation", locale:"en-US", cur:"$",
  h1:"Certified translation for USCIS",
  lede:"Portuguese, Spanish and French into English. The translation keeps the layout of your original document and comes with a signed Certificate of Translation Accuracy. You receive a PDF by email.",
  p1:"$15 per page, no hidden fees", p2:"Standard turnaround of about 2 business days", p3:"If our translation causes a problem, we redo it",
  c_h:"See your price", c_sub:"One page is up to 250 words. We confirm the page count before you pay.", c_lbl:"How many pages?",
- c_wa:"Send my documents on WhatsApp", c_mail:"I prefer to email them", c_fine:"You do not pay now. First we send the final price and a secure payment link.",
+ c_wa:"Send my documents on WhatsApp", c_mail:"I prefer to email them", c_pay:"Pay by card or Zelle.", c_fine:"You do not pay now. First we send the final price and payment instructions.",
  g_h:"What you receive", g1h:"A translation that matches the original", g1p:"Same fields, same order, same page structure. Stamps, signatures and codes that cannot be translated are described in brackets.",
  g2h:"A signed certificate", g2p:"The Certificate of Translation Accuracy contains the statements the USCIS rule asks for: the translator is competent in both languages and the translation is complete and accurate.",
  g3h:"A PDF ready to file", g3p:"Translation, certificate and a copy of your original in one file, by email.",
  h_h:"How it works", s1b:"Send your documents", s1s:"Clear photos or PDFs, by WhatsApp or email. Include the back of any page that has writing.",
- s2b:"We confirm the price", s2s:"We count the pages, confirm the total and send the payment link.", s3b:"You receive the PDF", s3s:"The translation with a signed certificate, ready to attach to your filing.",
+ s2b:"We confirm the price", s2s:"We count the pages, confirm the total and send payment instructions.", s3b:"You receive the PDF", s3s:"The translation with a signed certificate, ready to attach to your filing.",
  o_h:"What USCIS requires, plainly",
  o_p1:"USCIS asks for a complete English translation with the translator's signed certification that they are competent in both languages and that the translation is accurate. That is what we deliver. USCIS does not require notarization.",
  o_p2:"USCIS does not approve or certify translators or translation companies, so nobody can honestly say they are “USCIS approved”. A certified translation for a U.S. filing is also not a sworn translation. Attesta Translation is not a law firm and does not give immigration advice.",
@@ -230,6 +265,7 @@ en: {
  f_h:"Questions", q1:"Can I send photos from my phone?", a1:"Yes, if every edge, stamp and handwritten note is readable. If something needs a better photo, we tell you before you pay.",
  q2:"What does it cost over 10 pages?", a2:"From 11 pages the price is $12.50 per page. For rush service or a printed copy, ask and we will quote you.",
  q3:"Which languages do you translate?", a3:"Portuguese, Spanish and French into English. For other combinations, ask before you order.",
+ q5:"How can I pay?", a5:"We accept cards, through a secure payment link, and Zelle. Once we confirm your final price, we send the instructions. Zelle payments cannot be reversed, so check the recipient name before you send.",
  q4:"Do you keep my documents?", a4:"We use your documents only to prepare your translation, and we delete them within 30 days after delivery. You can ask us to delete them sooner. See our Privacy Policy.",
  e_h:"Send your documents and get your final price", ft:"Terms of Service", fp:"Privacy Policy", fh:"Full site",
  fd:"Attesta Translation provides document translation. It is not a law firm and does not give legal or immigration advice.",
@@ -240,14 +276,15 @@ en: {
 }};
 var $ = function (id) { return document.getElementById(id); };
 var state = { lang: "pt", pages: 1 };
-try { var qs = new URLSearchParams(location.search); var srcP = (qs.get("src") || "").replace(/[^A-Za-z0-9 _-]/g, "").slice(0, 30); if (srcP) CONFIG.source = srcP; var q = qs.get("lang"); var s = localStorage.getItem("attesta-lang"); state.lang = (q === "en" || q === "pt") ? q : (s === "en" || s === "pt") ? s : "pt"; } catch (e) {}
+function okLang(v) { return v === "pt" || v === "es" || v === "en"; }
+try { var qs = new URLSearchParams(location.search); var srcP = (qs.get("src") || "").replace(/[^A-Za-z0-9 _-]/g, "").slice(0, 30); if (srcP) CONFIG.source = srcP; var q = qs.get("lang"); var s = localStorage.getItem("attesta-lang"); state.lang = okLang(q) ? q : okLang(s) ? s : "pt"; } catch (e) {}
 function money(v) { var d = T[state.lang]; return d.cur + v.toLocaleString(d.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function rateFor(n) { return n >= CONFIG.volumeFrom ? CONFIG.volumeRate : CONFIG.rate; }
 function render() {
   var d = T[state.lang], n = state.pages, r = rateFor(n), t = money(n * r);
   document.documentElement.lang = d.locale; document.title = d.title;
   document.querySelectorAll("[data-i18n]").forEach(function (el) { var k = el.getAttribute("data-i18n"); if (d[k] !== undefined) el.textContent = d[k]; });
-  $("langBtn").textContent = d.langBtn; $("langBtn").setAttribute("aria-label", d.langAria);
+  document.querySelectorAll(".langs button").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-lang") === state.lang ? "true" : "false"); });
   $("minus").setAttribute("aria-label", d.minus); $("plus").setAttribute("aria-label", d.plus);
   $("rateLbl").textContent = d.rateLbl(n, money(r)); $("rateNote").textContent = d.rateNote(n); $("total").textContent = t;
   var wa = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(d.msg(n, t, CONFIG.source));
@@ -259,7 +296,7 @@ $("minus").addEventListener("click", function () { setPages(state.pages - 1); })
 $("plus").addEventListener("click", function () { setPages(state.pages + 1); });
 $("pages").addEventListener("input", function () { var v = parseInt(this.value, 10); if (!isNaN(v)) { state.pages = Math.min(CONFIG.maxPages, Math.max(1, v)); render(); } });
 $("pages").addEventListener("change", function () { setPages(this.value); });
-$("langBtn").addEventListener("click", function () { state.lang = state.lang === "pt" ? "en" : "pt"; try { localStorage.setItem("attesta-lang", state.lang); } catch (e) {} render(); });
+document.querySelectorAll(".langs button").forEach(function (b) { b.addEventListener("click", function () { state.lang = b.getAttribute("data-lang"); try { localStorage.setItem("attesta-lang", state.lang); } catch (e) {} render(); }); });
 render();
 </script>
 </body>
